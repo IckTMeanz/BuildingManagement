@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Hộ Khẩu - Chung cư BlueMoon</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar col-md-3 col-lg-2">
+        <div class="text-center mb-4">
+            <img src="img/logo.png" alt="Logo" class="img-fluid" style="width: 100px;height: 100px;">
+        </div>
+        <button class="btn btn-link text-white mt-3 d-none d-md-block" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-section="household">
+                    <i class="fas fa-users"></i> <span>Quản lý Hộ Khẩu</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-section="person">
+                    <i class="fas fa-user"></i> <span>Quản lý Nhân Khẩu</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-section="change">
+                    <i class="fas fa-exchange-alt"></i> <span>Biến động Nhân Khẩu</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-section="account">
+                    <i class="fas fa-cog"></i> <span>Quản lý Tài khoản</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h4>Bluemoon </h4>
+            <div class="user-profile">
+                <img src="/img/nghiaduong.jpg" alt="User">
+                <span>Xin chào, Tổ Trưởng</span>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div id="dashboard" class="content-section">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
+                <div class="card-body">
+                    <h5>Chào mừng đến với Dashboard</h5>
+                    <p>Đây là trang tổng quan. Bạn có thể thêm các thống kê hoặc thông tin tổng hợp tại đây.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="household" class="content-section active">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Tìm kiếm hộ khẩu...">
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addHouseholdModal">
+                    <i class="fas fa-plus"></i> Thêm Hộ mới
+                </button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Số Hộ Khẩu</th>
+                            <th>Tên Chủ Nhà</th>
+                            <th>Số Nhà</th>
+                            <th>Đường</th>
+                            <th>Phường</th>
+                            <th>Quận</th>
+                            <th>Ngày Làm Hộ Khẩu</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Trước</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Tiếp</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="person" class="content-section">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Tìm kiếm nhân khẩu...">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addPersonModal">
+                        <i class="fas fa-plus"></i> Thêm
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Số Hộ Khẩu</th>
+                            <th>Họ Tên</th>
+                            <th>Ngày Sinh</th>
+                            <th>Giới Tính</th>
+                            <th>Dân Tộc</th>
+                            <th>Tôn Giáo</th>
+                            <th>CCCD</th>
+                            <th>Ngày Cấp</th>
+                            <th>Nơi Cấp</th>
+                            <th>Nghề Nghiệp</th>
+                            <th>Ghi Chú</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="change" class="content-section">
+            <div class="row mb-3">
+
+                <div class="col-md-7">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Tìm kiếm biến động...">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#addChangeModal">
+                        <i class="fas fa-plus"></i> Đăng ký
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Mã biến động</th>
+                            <th>Nhân khẩu</th>
+                            <th>Loại</th>
+                            <th>Ngày bắt đầu</th>
+                            <th>Ngày kết thúc</th>
+                            <th>Lý do</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="account" class="content-section">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Tìm kiếm tài khoản...">
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                    <i class="fas fa-plus"></i> Tạo tài khoản
+                </button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tên đăng nhập</th>
+                            <th>Họ tên</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tạo</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>admin</td>
+                            <td>Nguyễn Văn Admin</td>
+                            <td>Tổ trưởng</td>
+                            <td><span class="badge bg-success">Hoạt động</span></td>
+                            <td>01/01/2023</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fas fa-lock"></i></button>
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-key"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>user1</td>
+                            <td>Trần Thị User</td>
+                            <td>Tổ phó</td>
+                            <td><span class="badge bg-success">Hoạt động</span></td>
+                            <td>15/01/2023</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-danger"><i class="fas fa-lock"></i></button>
+                                <button class="btn btn-sm btn-secondary"><i class="fas fa-key"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Hộ Khẩu -->
+    <div class="modal fade" id="addHouseholdModal" tabindex="-1" aria-labelledby="addHouseholdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addHouseholdModalLabel">Thêm Hộ Khẩu mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="householdCode" class="form-label">Số Hộ Khẩu</label>
+                                <input type="text" class="form-control" id="householdCode" value="HK004" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="householdOwner" class="form-label">Tên Chủ Nhà</label>
+                                <input type="text" class="form-control" id="householdOwner" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="householdNumber" class="form-label">Số Nhà</label>
+                                <input type="text" class="form-control" id="householdNumber" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="householdDate" class="form-label">Ngày Làm Hộ Khẩu</label>
+                                <input type="date" class="form-control" id="householdDate" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="householdStreet" class="form-label">Đường</label>
+                                <input type="text" class="form-control" id="householdStreet" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="householdWard" class="form-label">Phường</label>
+                                <input type="text" class="form-control" id="householdWard" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="householdDistrict" class="form-label">Quận</label>
+                                <input type="text" class="form-control" id="householdDistrict" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="alert('Hộ khẩu đã được lưu!')">Lưu Hộ Khẩu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Hộ Khẩu -->
+    <div class="modal fade" id="editHouseholdModal" tabindex="-1" aria-labelledby="editHouseholdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editHouseholdModalLabel">Sửa Hộ Khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editHouseholdCode" class="form-label">Số Hộ Khẩu</label>
+                                <input type="text" class="form-control" id="editHouseholdCode" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editHouseholdOwner" class="form-label">Tên Chủ Nhà</label>
+                                <input type="text" class="form-control" id="editHouseholdOwner" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editHouseholdNumber" class="form-label">Số Nhà</label>
+                                <input type="text" class="form-control" id="editHouseholdNumber" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editHouseholdDate" class="form-label">Ngày Làm Hộ Khẩu</label>
+                                <input type="date" class="form-control" id="editHouseholdDate" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="editHouseholdStreet" class="form-label">Đường</label>
+                                <input type="text" class="form-control" id="editHouseholdStreet" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editHouseholdWard" class="form-label">Phường</label>
+                                <input type="text" class="form-control" id="editHouseholdWard" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editHouseholdDistrict" class="form-label">Quận</label>
+                                <input type="text" class="form-control" id="editHouseholdDistrict" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="alert('Hộ khẩu đã được cập nhật!')">Cập nhật Hộ Khẩu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Nhân Khẩu -->
+    <div class="modal fade" id="addPersonModal" tabindex="-1" aria-labelledby="addPersonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPersonModalLabel">Thêm Nhân Khẩu mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="personId" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="personId" value="NK003" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="personHouseholdCode" class="form-label">Số Hộ Khẩu</label>
+                                <select class="form-select" id="personHouseholdCode" required>
+                                    <option selected>Chọn hộ khẩu...</option>
+                                    <option value="HK001">HK001 - Nguyễn Văn A</option>
+                                    <option value="HK002">HK002 - Trần Thị B</option>
+                                    <option value="HK003">HK003 - Lê Văn C</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="personName" class="form-label">Họ và Tên</label>
+                                <input type="text" class="form-control" id="personName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="personBirth" class="form-label">Ngày Sinh</label>
+                                <input type="date" class="form-control" id="personBirth" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="personGender" class="form-label">Giới Tính</label>
+                                <select class="form-select" id="personGender" required>
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="personEthnicity" class="form-label">Dân Tộc</label>
+                                <input type="text" class="form-control" id="personEthnicity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="personReligion" class="form-label">Tôn Giáo</label>
+                                <input type="text" class="form-control" id="personReligion">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="personCccd" class="form-label">CCCD</label>
+                                <input type="text" class="form-control" id="personCccd" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="personIssueDate" class="form-label">Ngày Cấp</label>
+                                <input type="date" class="form-control" id="personIssueDate" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="personIssuePlace" class="form-label">Nơi Cấp</label>
+                                <input type="text" class="form-control" id="personIssuePlace" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="personJob" class="form-label">Nghề Nghiệp</label>
+                                <input type="text" class="form-control" id="personJob">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="personNote" class="form-label">Ghi Chú</label>
+                                <textarea class="form-control" id="personNote" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="alert('Nhân khẩu đã được lưu!')">Lưu Nhân Khẩu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Nhân Khẩu -->
+    <div class="modal fade" id="editPersonModal" tabindex="-1" aria-labelledby="editPersonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPersonModalLabel">Sửa Nhân Khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editPersonId" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="editPersonId" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editPersonHouseholdCode" class="form-label">Số Hộ Khẩu</label>
+                                <select class="form-select" id="editPersonHouseholdCode" required>
+                                    <option selected>Chọn hộ khẩu...</option>
+                                    <option value="HK001">HK001 - Nguyễn Văn A</option>
+                                    <option value="HK002">HK002 - Trần Thị B</option>
+                                    <option value="HK003">HK003 - Lê Văn C</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editPersonName" class="form-label">Họ và Tên</label>
+                                <input type="text" class="form-control" id="editPersonName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editPersonBirth" class="form-label">Ngày Sinh</label>
+                                <input type="date" class="form-control" id="editPersonBirth" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="editPersonGender" class="form-label">Giới Tính</label>
+                                <select class="form-select" id="editPersonGender" required>
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editPersonEthnicity" class="form-label">Dân Tộc</label>
+                                <input type="text" class="form-control" id="editPersonEthnicity" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editPersonReligion" class="form-label">Tôn Giáo</label>
+                                <input type="text" class="form-control" id="editPersonReligion">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="editPersonCccd" class="form-label">CCCD</label>
+                                <input type="text" class="form-control" id="editPersonCccd" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editPersonIssueDate" class="form-label">Ngày Cấp</label>
+                                <input type="date" class="form-control" id="editPersonIssueDate" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="editPersonIssuePlace" class="form-label">Nơi Cấp</label>
+                                <input type="text" class="form-control" id="editPersonIssuePlace" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editPersonJob" class="form-label">Nghề Nghiệp</label>
+                                <input type="text" class="form-control" id="editPersonJob">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editPersonNote" class="form-label">Ghi Chú</label>
+                                <textarea class="form-control" id="editPersonNote" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="alert('Nhân khẩu đã được cập nhật!')">Cập nhật Nhân Khẩu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đăng ký Biến động -->
+    <div class="modal fade" id="addChangeModal" tabindex="-1" aria-labelledby="addChangeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addChangeModalLabel">Đăng ký Biến động Nhân Khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="changeType" class="form-label">Loại biến động</label>
+                            <select class="form-select" id="changeType" required>
+                                <option value="temporary_stay">Tạm trú</option>
+                                <option value="temporary_leave">Tạm vắng</option>
+                                <option value="move">Chuyển hộ khẩu</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="changePerson" class="form-label">Nhân khẩu</label>
+                            <select class="form-select" id="changePerson" required>
+                                <option selected>Chọn nhân khẩu...</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="changeStart" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="changeStart" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="changeEnd" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="changeEnd">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="changeReason" class="form-label">Lý do</label>
+                            <textarea class="form-control" id="changeReason" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveChangeBtn">Đăng ký Biến động</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Biến động -->
+    <div class="modal fade" id="editChangeModal" tabindex="-1" aria-labelledby="editChangeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editChangeModalLabel">Sửa Biến động Nhân Khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editChangeId" class="form-label">Mã biến động</label>
+                            <input type="text" class="form-control" id="editChangeId" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editChangeType" class="form-label">Loại biến động</label>
+                            <select class="form-select" id="editChangeType" required>
+                                <option value="temporary_stay">Tạm trú</option>
+                                <option value="temporary_leave">Tạm vắng</option>
+                                <option value="move">Chuyển hộ khẩu</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editChangePerson" class="form-label">Nhân khẩu</label>
+                            <select class="form-select" id="editChangePerson" required>
+                                <option selected>Chọn nhân khẩu...</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editChangeStart" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="editChangeStart" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editChangeEnd" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="editChangeEnd">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editChangeReason" class="form-label">Lý do</label>
+                            <textarea class="form-control" id="editChangeReason" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editChangeStatus" class="form-label">Trạng thái</label>
+                            <select class="form-select" id="editChangeStatus" required>
+                                <option value="Đang xử lý">Đang xử lý</option>
+                                <option value="Hoàn thành">Hoàn thành</option>
+                                <option value="Hủy">Hủy</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="updateChangeBtn">Cập nhật Biến động</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Tài khoản -->
+    <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAccountModalLabel">Tạo tài khoản mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="accountUsername" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="accountUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accountPassword" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="accountPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accountName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="accountName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accountRole" class="form-label">Vai trò</label>
+                            <select class="form-select" id="accountRole" required>
+                                <option value="admin">Tổ trưởng</option>
+                                <option value="manager">Tổ phó</option>
+                                <option value="staff">Nhân viên</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="accountPhone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="accountPhone" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="alert('Tài khoản đã được tạo!')">Tạo tài khoản</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+    <!-- Footer -->
+    <footer class="footer py-2" style="background-color: var(--primary-color); color: white;">
+        <div class="container-fluid text-center">
+            <p class="mb-0">&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 27 KTPM-HUST.</p>
+        </div>
+    </footer>
+
+
+</html>
+<style>
+    :root {
+    --primary-color: #1e90ff;
+    --secondary-color: #1565c0;
+    --accent-color: #e74c3c;
+    --light-color: #f8fafc;
+    --dark-color: #1e293b;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-color);
+    overflow-x: hidden;
+}
+
+.sidebar {
+    background-color: var(--dark-color);
+    color: white;
+    height: 100vh;
+    position: fixed;
+    padding-top: 20px;
+    width: 250px;
+    transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar .nav-link {
+    color: var(--light-color);
+    margin-bottom: 5px;
+    border-radius: 8px;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateX(5px);
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+.sidebar.collapsed .nav-link span {
+    display: none;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.collapsed {
+    margin-left: 70px;
+}
+
+.header {
+    background-color: rgb(164, 173, 255);
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 15px 20px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+.table th {
+    background-color: var(--light-color);
+    font-weight: 600;
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding-left: 40px;
+    border-radius: 25px;
+    border: 1px solid #d1d5db;
+    transition: border-color 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 12px;
+    color: #6b7280;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.content-section {
+    display: none;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.content-section.active {
+    display: block;
+}
+
+.modal-content {
+    border-radius: 12px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+}
+
+.pagination .page-link {
+    border-radius: 8px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .main-content {
+        margin-left: 70px;
+    }
+    
+    .sidebar.collapsed {
+        width: 250px;
+    }
+    
+    .main-content.collapsed {
+        margin-left: 250px;
+    }
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.collapsed ~ .footer {
+    margin-left: 70px;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        margin-left: 70px;
+    }
+    
+    .main-content.collapsed ~ .footer {
+        margin-left: 250px;
+    }
+}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // API base URL
+    const API_URL = 'http://localhost:3000';
+
+    // Xử lý sự kiện click trên sidebar
+    const navLinks = document.querySelectorAll('.sidebar .nav-link');
+    const contentSections = document.querySelectorAll('.content-section');
+    
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const sectionId = this.getAttribute('data-section');
+            
+            navLinks.forEach(function(nav) {
+                nav.classList.remove('active');
+            });
+            contentSections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+            
+            this.classList.add('active');
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
+    });
+    
+    // Xử lý tìm kiếm
+    const searchInputs = document.querySelectorAll('.search-box input');
+    searchInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const section = this.closest('.content-section');
+            const rows = section.querySelectorAll('tbody tr');
+            
+            rows.forEach(function(row) {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Xử lý thu gọn/mở rộng sidebar
+    const toggleSidebarBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    
+    toggleSidebarBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('collapsed');
+    });
+
+    // Utility: Convert date from YYYY-MM-DD to DD/MM/YYYY
+    function formatDate(dateStr) {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+    }
+
+    // Utility: Convert date from DD/MM/YYYY to YYYY-MM-DD
+    function parseDate(dateStr) {
+        if (!dateStr) return '';
+        const [day, month, year] = dateStr.split('/');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Utility: Map gender values for display
+    function mapGender(gender, toDisplay = true) {
+        const genderMap = {
+            'male': 'Nam',
+            'female': 'Nữ',
+            'other': 'Khác',
+            'Nam': 'male',
+            'Nữ': 'female',
+            'Khác': 'other'
+        };
+        return genderMap[gender] || gender;
+    }
+
+    // Generate next household ID (e.g., HK001, HK002)
+    async function getNextHouseholdId() {
+        try {
+            const response = await fetch(`${API_URL}/households`);
+            const households = await response.json();
+            if (households.length === 0) return 'HK001';
+            const maxId = households
+                .map(h => parseInt(h.id.replace('HK', '')))
+                .reduce((max, id) => Math.max(max, id), 0);
+            return `HK${String(maxId + 1).padStart(3, '0')}`;
+        } catch (error) {
+            console.error('Error generating household ID:', error);
+            return 'HK001'; // Fallback ID
+        }
+    }
+
+    // Generate next person ID (e.g., NK001, NK002)
+    async function getNextPersonId() {
+        try {
+            const response = await fetch(`${API_URL}/persons`);
+            const persons = await response.json();
+            if (persons.length === 0) return 'NK001';
+            const maxId = persons
+                .map(p => parseInt(p.id.replace('NK', '')))
+                .reduce((max, id) => Math.max(max, id), 0);
+            return `NK${String(maxId + 1).padStart(3, '0')}`;
+        } catch (error) {
+            console.error('Error generating person ID:', error);
+            return 'NK001'; // Fallback ID
+        }
+    }
+
+    // Generate next change ID (e.g., BD001, BD002)
+async function getNextChangeId() {
+    try {
+        const response = await fetch(`${API_URL}/changes`);
+        const changes = await response.json();
+        if (changes.length === 0) return 'BD001';
+        const maxId = changes
+            .map(c => parseInt(c.id.replace('BD', '')))
+            .reduce((max, id) => Math.max(max, id), 0);
+        return `BD${String(maxId + 1).padStart(3, '0')}`;
+    } catch (error) {
+        console.error('Error generating change ID:', error);
+        return 'BD001'; // Fallback ID
+    }
+}
+
+    // Load households from API
+    async function loadHouseholds() {
+        try {
+            const response = await fetch(`${API_URL}/households`);
+            const households = await response.json();
+            const tbody = document.querySelector('#household tbody');
+            tbody.innerHTML = '';
+            households.forEach(h => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${h.id}</td>
+                    <td>${h.owner}</td>
+                    <td>${h.number}</td>
+                    <td>${h.street}</td>
+                    <td>${h.ward}</td>
+                    <td>${h.district}</td>
+                    <td>${formatDate(h.date)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-household" data-bs-toggle="modal" data-bs-target="#editHouseholdModal"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete-household"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            attachHouseholdEventListeners();
+        } catch (error) {
+            console.error('Error loading households:', error);
+            alert('Không thể tải danh sách hộ khẩu!');
+        }
+    }
+
+    // Load persons from API
+    async function loadPersons() {
+        try {
+            const response = await fetch(`${API_URL}/persons`);
+            const persons = await response.json();
+            const tbody = document.querySelector('#person tbody');
+            tbody.innerHTML = '';
+            persons.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.id}</td>
+                    <td>${p.householdId}</td>
+                    <td>${p.name}</td>
+                    <td>${formatDate(p.birth)}</td>
+                    <td>${mapGender(p.gender)}</td>
+                    <td>${p.ethnicity}</td>
+                    <td>${p.religion || ''}</td>
+                    <td>${p.cccd}</td>
+                    <td>${formatDate(p.issueDate)}</td>
+                    <td>${p.issuePlace}</td>
+                    <td>${p.job || ''}</td>
+                    <td>${p.note || ''}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-person" data-bs-toggle="modal" data-bs-target="#editPersonModal"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete-person"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            attachPersonEventListeners();
+        } catch (error) {
+            console.error('Error loading persons:', error);
+            alert('Không thể tải danh sách nhân khẩu!');
+        }
+    }
+
+    // Utility: Map change type values for display
+function mapChangeType(type, toDisplay = true) {
+    const typeMap = {
+        'temporary_stay': 'Tạm trú',
+        'temporary_leave': 'Tạm vắng',
+        'move': 'Chuyển hộ khẩu',
+        'Tạm trú': 'temporary_stay',
+        'Tạm vắng': 'temporary_leave',
+        'Chuyển hộ khẩu': 'move'
+    };
+    return typeMap[type] || type;
+}
+
+// Load changes from API
+async function loadChanges() {
+    try {
+        const response = await fetch(`${API_URL}/changes`);
+        const changes = await response.json();
+        const tbody = document.querySelector('#change tbody');
+        tbody.innerHTML = '';
+        
+        changes.forEach(c => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${c.id}</td>
+                <td>${c.personName} (${c.personId})</td>
+                <td>${mapChangeType(c.type)}</td>
+                <td>${formatDate(c.startDate)}</td>
+                <td>${formatDate(c.endDate)}</td>
+                <td>${c.reason}</td>
+                <td>${c.status}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary edit-change" data-bs-toggle="modal" data-bs-target="#editChangeModal">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-change">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        attachChangeEventListeners();
+    } catch (error) {
+        console.error('Error loading changes:', error);
+        alert('Không thể tải danh sách biến động!');
+    }
+}
+
+// Load persons into dropdowns for change forms
+async function loadPersonDropdown() {
+    try {
+        const addDropdown = document.getElementById('changePerson');
+        const editDropdown = document.getElementById('editChangePerson');
+
+        const response = await fetch(`${API_URL}/persons`);
+        const persons = await response.json();
+
+        addDropdown.innerHTML = '<option selected>Chọn nhân khẩu...</option>';
+        editDropdown.innerHTML = '<option selected>Chọn nhân khẩu...</option>';
+
+        persons.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = `${p.name} (${p.id})`;
+            addDropdown.appendChild(option.cloneNode(true));
+            editDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading person dropdown:', error);
+        alert('Không thể tải danh sách nhân khẩu cho dropdown!');
+    }
+}
+
+    // Load households into dropdowns
+    async function loadHouseholdDropdown() {
+    try {
+        const addDropdown = document.getElementById('personHouseholdCode');
+        const editDropdown = document.getElementById('editPersonHouseholdCode');
+
+        // Skip if dropdowns are not found (modals not loaded)
+        if (!addDropdown || !editDropdown) {
+            console.warn('Dropdown elements not found. Modals may not be loaded.');
+            return;
+        }
+
+        const response = await fetch(`${API_URL}/households`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch households: ${response.status}`);
+        }
+        const households = await response.json();
+
+        // Clear existing options
+        addDropdown.innerHTML = '<option selected>Chọn hộ khẩu...</option>';
+        editDropdown.innerHTML = '<option selected>Chọn hộ khẩu...</option>';
+
+        // Populate options
+        households.forEach(h => {
+            const option = document.createElement('option');
+            option.value = h.id;
+            option.textContent = `${h.id} - ${h.owner}`;
+            addDropdown.appendChild(option.cloneNode(true));
+            editDropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading household dropdown:', error);
+        alert('Không thể tải danh sách hộ khẩu cho dropdown!');
+    }
+}
+    // Attach event listeners for household edit and delete buttons
+    function attachHouseholdEventListeners() {
+        const editButtons = document.querySelectorAll('.edit-household');
+        const deleteButtons = document.querySelectorAll('.delete-household');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const cells = row.querySelectorAll('td');
+                
+                document.getElementById('editHouseholdCode').value = cells[0].textContent;
+                document.getElementById('editHouseholdOwner').value = cells[1].textContent;
+                document.getElementById('editHouseholdNumber').value = cells[2].textContent;
+                document.getElementById('editHouseholdStreet').value = cells[3].textContent;
+                document.getElementById('editHouseholdWard').value = cells[4].textContent;
+                document.getElementById('editHouseholdDistrict').value = cells[5].textContent;
+                document.getElementById('editHouseholdDate').value = parseDate(cells[6].textContent);
+            });
+        });
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                if (!confirm('Bạn có chắc muốn xóa hộ khẩu này?')) return;
+                const row = this.closest('tr');
+                const id = row.querySelector('td').textContent;
+    try {
+        const response = await fetch(`${API_URL}/households/${id}`, {
+            method: 'DELETE'
+        });
+        if (response.status !== 204 && !response.ok) {
+            throw new Error(`Failed to delete household: ${response.status}`);
+        }
+        await loadHouseholds(); // Reload the household table
+        await loadHouseholdDropdown(); // Update dropdowns
+        alert('Hộ khẩu đã được xóa thành công!');
+    } catch (error) {
+        console.error('Error deleting household:', error);
+        alert('Có lỗi xảy ra khi xóa hộ khẩu');
+    }
+            });
+        });
+    }
+
+    // Attach event listeners for person edit and delete buttons
+    function attachPersonEventListeners() {
+        const editButtons = document.querySelectorAll('.edit-person');
+        const deleteButtons = document.querySelectorAll('.delete-person');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                await loadHouseholdDropdown();
+                const row = this.closest('tr');
+                const cells = row.querySelectorAll('td');
+                
+                document.getElementById('editPersonId').value = cells[0].textContent;
+                document.getElementById('editPersonHouseholdCode').value = cells[1].textContent;
+                document.getElementById('editPersonName').value = cells[2].textContent;
+                document.getElementById('editPersonBirth').value = parseDate(cells[3].textContent);
+                document.getElementById('editPersonGender').value = mapGender(cells[4].textContent, false);
+                document.getElementById('editPersonEthnicity').value = cells[5].textContent;
+                document.getElementById('editPersonReligion').value = cells[6].textContent;
+                document.getElementById('editPersonCccd').value = cells[7].textContent;
+                document.getElementById('editPersonIssueDate').value = parseDate(cells[8].textContent);
+                document.getElementById('editPersonIssuePlace').value = cells[9].textContent;
+                document.getElementById('editPersonJob').value = cells[10].textContent;
+                document.getElementById('editPersonNote').value = cells[11].textContent;
+            });
+        });
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', async function() {
+                if (!confirm('Bạn có chắc muốn xóa nhân khẩu này?')) return;
+                const row = this.closest('tr');
+                const id = row.querySelector('td').textContent;
+                try {
+                    const response = await fetch(`${API_URL}/persons/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        alert('Nhân khẩu đã được xóa!');
+                        loadPersons();
+                    } else {
+                        alert('Xóa nhân khẩu thất bại!');
+                    }
+                } catch (error) {
+                    console.error('Error deleting person:', error);
+                    alert('Lỗi khi xóa nhân khẩu!');
+                }
+            });
+        });
+    }
+
+    // Add new household
+    document.querySelector('#addHouseholdModal .btn-primary').addEventListener('click', async function() {
+        const household = {
+            id: document.getElementById('householdCode').value,
+            owner: document.getElementById('householdOwner').value,
+            number: document.getElementById('householdNumber').value,
+            street: document.getElementById('householdStreet').value,
+            ward: document.getElementById('householdWard').value,
+            district: document.getElementById('householdDistrict').value,
+            date: document.getElementById('householdDate').value
+        };
+        try {
+            const response = await fetch(`${API_URL}/households`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(household)
+            });
+            if (response.ok) {
+                alert('Hộ khẩu đã được lưu!');
+                document.querySelector('#addHouseholdModal .btn-close').click();
+                loadHouseholds();
+                loadHouseholdDropdown();
+            } else {
+                alert('Lưu hộ khẩu thất bại!');
+            }
+        } catch (error) {
+            console.error('Error adding household:', error);
+            alert('Lỗi khi lưu hộ khẩu!');
+        }
+    });
+
+    // Update household
+    document.querySelector('#editHouseholdModal .btn-primary').addEventListener('click', async function() {
+        const id = document.getElementById('editHouseholdCode').value;
+        const household = {
+            id: id,
+            owner: document.getElementById('editHouseholdOwner').value,
+            number: document.getElementById('editHouseholdNumber').value,
+            street: document.getElementById('editHouseholdStreet').value,
+            ward: document.getElementById('editHouseholdWard').value,
+            district: document.getElementById('editHouseholdDistrict').value,
+            date: document.getElementById('editHouseholdDate').value
+        };
+        try {
+            const response = await fetch(`${API_URL}/households/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(household)
+            });
+            if (response.ok) {
+                alert('Hộ khẩu đã được cập nhật!');
+                document.querySelector('#editHouseholdModal .btn-close').click();
+                loadHouseholds();
+                loadHouseholdDropdown();
+            } else {
+                alert('Cập nhật hộ khẩu thất bại!');
+            }
+        } catch (error) {
+            console.error('Error updating household:', error);
+            alert('Lỗi khi cập nhật hộ khẩu!');
+        }
+    });
+
+    // Add new person
+    document.querySelector('#addPersonModal .btn-primary').addEventListener('click', async function() {
+        const person = {
+            id: document.getElementById('personId').value,
+            householdId: document.getElementById('personHouseholdCode').value,
+            name: document.getElementById('personName').value,
+            birth: document.getElementById('personBirth').value,
+            gender: document.getElementById('personGender').value,
+            ethnicity: document.getElementById('personEthnicity').value,
+            religion: document.getElementById('personReligion').value,
+            cccd: document.getElementById('personCccd').value,
+            issueDate: document.getElementById('personIssueDate').value,
+            issuePlace: document.getElementById('personIssuePlace').value,
+            job: document.getElementById('personJob').value,
+            note: document.getElementById('personNote').value
+        };
+        try {
+            const response = await fetch(`${API_URL}/persons`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(person)
+            });
+            if (response.ok) {
+                alert('Nhân khẩu đã được lưu!');
+                document.querySelector('#addPersonModal .btn-close').click();
+                loadPersons();
+            } else {
+                alert('Lưu nhân khẩu thất bại!');
+            }
+        } catch (error) {
+            console.error('Error adding person:', error);
+            alert('Lỗi khi lưu nhân khẩu!');
+        }
+    });
+
+    // Update person
+    document.querySelector('#editPersonModal .btn-primary').addEventListener('click', async function() {
+        const id = document.getElementById('editPersonId').value;
+        const person = {
+            id: id,
+            householdId: document.getElementById('editPersonHouseholdCode').value,
+            name: document.getElementById('editPersonName').value,
+            birth: document.getElementById('editPersonBirth').value,
+            gender: document.getElementById('editPersonGender').value,
+            ethnicity: document.getElementById('editPersonEthnicity').value,
+            religion: document.getElementById('editPersonReligion').value,
+            cccd: document.getElementById('editPersonCccd').value,
+            issueDate: document.getElementById('editPersonIssueDate').value,
+            issuePlace: document.getElementById('editPersonIssuePlace').value,
+            job: document.getElementById('editPersonJob').value,
+            note: document.getElementById('editPersonNote').value
+        };
+        try {
+            const response = await fetch(`${API_URL}/persons/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(person)
+            });
+            if (response.ok) {
+                alert('Nhân khẩu đã được cập nhật!');
+                document.querySelector('#editPersonModal .btn-close').click();
+                loadPersons();
+            } else {
+                alert('Cập nhật nhân khẩu thất bại!');
+            }
+        } catch (error) {
+            console.error('Error updating person:', error);
+            alert('Lỗi khi cập nhật nhân khẩu!');
+        }
+    });
+
+    // Attach event listeners for change edit and delete buttons
+function attachChangeEventListeners() {
+    const editButtons = document.querySelectorAll('.edit-change');
+    const deleteButtons = document.querySelectorAll('.delete-change');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            await loadPersonDropdown();
+            const row = this.closest('tr');
+            const cells = row.querySelectorAll('td');
+            
+            document.getElementById('editChangeId').value = cells[0].textContent;
+            document.getElementById('editChangePerson').value = cells[1].textContent.match(/\(([^)]+)\)/)[1];
+            document.getElementById('editChangeType').value = mapChangeType(cells[2].textContent, false);
+            document.getElementById('editChangeStart').value = parseDate(cells[3].textContent);
+            document.getElementById('editChangeEnd').value = parseDate(cells[4].textContent);
+            document.getElementById('editChangeReason').value = cells[5].textContent;
+            document.getElementById('editChangeStatus').value = cells[6].textContent;
+        });
+    });
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+            if (!confirm('Bạn có chắc muốn xóa biến động này?')) return;
+            const row = this.closest('tr');
+            const id = row.querySelector('td').textContent;
+            
+            try {
+                const response = await fetch(`${API_URL}/changes/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    alert('Biến động đã được xóa!');
+                    loadChanges();
+                } else {
+                    alert('Xóa biến động thất bại!');
+                }
+            } catch (error) {
+                console.error('Error deleting change:', error);
+                alert('Lỗi khi xóa biến động!');
+            }
+        });
+    });
+}
+
+// Set up event listener for "Add Change" button
+document.querySelector('[data-bs-target="#addChangeModal"]').addEventListener('click', async function() {
+    await loadPersonDropdown();
+});
+
+// Add new change
+document.getElementById('saveChangeBtn').addEventListener('click', async function() {
+    const selectedPerson = document.getElementById('changePerson');
+    const personId = selectedPerson.value;
+    const personName = selectedPerson.options[selectedPerson.selectedIndex].text.split(' (')[0];
+    
+    const change = {
+        personId: personId,
+        personName: personName,
+        type: document.getElementById('changeType').value,
+        startDate: document.getElementById('changeStart').value,
+        endDate: document.getElementById('changeEnd').value || null,
+        reason: document.getElementById('changeReason').value,
+        status: "Đang xử lý" // Default status
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/changes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(change)
+        });
+        
+        if (response.ok) {
+            alert('Biến động đã được đăng ký!');
+            document.querySelector('#addChangeModal .btn-close').click();
+            loadChanges();
+        } else {
+            alert('Đăng ký biến động thất bại!');
+        }
+    } catch (error) {
+        console.error('Error adding change:', error);
+        alert('Lỗi khi đăng ký biến động!');
+    }
+});
+
+// Update existing change
+document.getElementById('updateChangeBtn').addEventListener('click', async function() {
+    const id = document.getElementById('editChangeId').value;
+    const selectedPerson = document.getElementById('editChangePerson');
+    const personId = selectedPerson.value;
+    const personName = selectedPerson.options[selectedPerson.selectedIndex].text.split(' (')[0];
+    
+    const change = {
+        id: id,
+        personId: personId,
+        personName: personName,
+        type: document.getElementById('editChangeType').value,
+        startDate: document.getElementById('editChangeStart').value,
+        endDate: document.getElementById('editChangeEnd').value || null,
+        reason: document.getElementById('editChangeReason').value,
+        status: document.getElementById('editChangeStatus').value
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/changes/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(change)
+        });
+        
+        if (response.ok) {
+            alert('Biến động đã được cập nhật!');
+            document.querySelector('#editChangeModal .btn-close').click();
+            loadChanges();
+        } else {
+            alert('Cập nhật biến động thất bại!');
+        }
+    } catch (error) {
+        console.error('Error updating change:', error);
+        alert('Lỗi khi cập nhật biến động!');
+    }
+});
+
+    // Set household ID when opening "Add Household" modal
+    document.querySelector('[data-bs-target="#addHouseholdModal"]').addEventListener('click', async function() {
+        const nextId = await getNextHouseholdId();
+        document.getElementById('householdCode').value = nextId;
+    });
+
+    // Set person ID and load household dropdown when opening "Add Person" modal
+    document.querySelector('[data-bs-target="#addPersonModal"]').addEventListener('click', async function() {
+        const nextId = await getNextPersonId();
+        document.getElementById('personId').value = nextId;
+        await loadHouseholdDropdown();
+    });
+
+    document.querySelector('[data-bs-target="#addChangeModal"]').addEventListener('click', async function() {
+    await loadPersonDropdown();
+    const nextId = await getNextChangeId();
+    document.getElementById('changeId').value = nextId; // Thêm field này vào modal nếu chưa có
+});
+
+// Initial load
+loadHouseholds();
+loadPersons();
+loadHouseholdDropdown();
+loadChanges(); 
+});
+</script>

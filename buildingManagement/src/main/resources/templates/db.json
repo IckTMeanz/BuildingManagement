@@ -1,0 +1,119 @@
+{
+  "households": [
+    {
+      "id": "HK001",
+      "owner": "Nguyễn Văn A",
+      "number": "101",
+      "street": "Đường Giải Phóng",
+      "ward": "Phường Đồng Tâm",
+      "district": "Quận Hai Bà Trưng",
+      "date": "2020-05-15"
+    },
+    {
+      "id": "HK002",
+      "owner": "Trần Thị B",
+      "number": "202",
+      "street": "Đường Trần Đại Nghĩa",
+      "ward": "Phường Bách Khoa",
+      "district": "Quận Hai Bà Trưng",
+      "date": "2021-03-20"
+    },
+    {
+      "id": "HK003",
+      "owner": "Lê Văn C",
+      "number": "303",
+      "street": "Đường Lê Thanh Nghị",
+      "ward": "Phường Đồng Tâm",
+      "district": "Quận Hai Bà Trưng",
+      "date": "2022-01-10"
+    }
+  ],
+  "persons": [
+    {
+      "id": "NK001",
+      "householdId": "HK001",
+      "name": "Nguyễn Văn A",
+      "birth": "1980-05-15",
+      "gender": "male",
+      "ethnicity": "Kinh",
+      "religion": "Không",
+      "cccd": "001198000001",
+      "issueDate": "2016-01-10",
+      "issuePlace": "CA Hà Nội",
+      "job": "Kỹ sư",
+      "note": "Chủ hộ"
+    },
+    {
+      "id": "NK002",
+      "householdId": "HK001",
+      "name": "Nguyễn Thị D",
+      "birth": "1985-08-20",
+      "gender": "female",
+      "ethnicity": "Kinh",
+      "religion": "Phật giáo",
+      "cccd": "001198500002",
+      "issueDate": "2016-01-10",
+      "issuePlace": "CA Hà Nội",
+      "job": "Giáo viên",
+      "note": "Vợ chủ hộ"
+    },
+    {
+      "id": "NK003",
+      "householdId": "HK002",
+      "name": "Trần Thị B",
+      "birth": "1975-11-25",
+      "gender": "female",
+      "ethnicity": "Kinh",
+      "religion": "Không",
+      "cccd": "001197500003",
+      "issueDate": "2015-06-15",
+      "issuePlace": "CA Hà Nội",
+      "job": "Bác sĩ",
+      "note": "Chủ hộ"
+    }
+  ],
+  "changes": [
+    {
+      "id": "BD001",
+      "personId": "NK001",
+      "personName": "Nguyễn Văn A",
+      "type": "temporary_leave",
+      "startDate": "2023-06-01",
+      "endDate": "2023-08-01",
+      "reason": "Công tác nước ngoài",
+      "status": "Hoàn thành"
+    },
+    {
+      "id": "BD002",
+      "personId": "NK003",
+      "personName": "Trần Thị B",
+      "type": "temporary_stay",
+      "startDate": "2023-07-15",
+      "endDate": "2023-09-15",
+      "reason": "Điều trị bệnh",
+      "status": "Đang xử lý"
+    }
+  ],
+  "accounts": [
+    {
+      "username": "admin",
+      "password": "admin123",
+      "name": "Nguyễn Văn Admin",
+      "role": "admin",
+      "phone": "0987654321",
+      "status": "active",
+      "createdAt": "2023-01-01",
+      "id": "7157"
+    },
+    {
+      "username": "user1",
+      "password": "user123",
+      "name": "Trần Thị User",
+      "role": "manager",
+      "phone": "0912345678",
+      "status": "active",
+      "createdAt": "2023-01-15",
+      "id": "abe7"
+    }
+  ]
+}
