@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <img src="image/logoBlueMoon.png" alt="Logo" class="logo">
+            <h1>Bluemoon</h1>
+        </div>
+    </header>
+
+    <div class="login-container">
+        <h2>Đăng Nhập</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Đăng nhập</button>
+            <p id="errorMessage" class="error"></p>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+    </footer>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin: 50px auto;
+            flex: 1 0 auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            flex-shrink: 0;
+        }
+    </style>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Giả lập kiểm tra đăng nhập
+            if (username === 'admin' && password === '12345') {
+                localStorage.setItem('token', 'fake-token');
+                window.location.href = 'dashboard.html';
+            } else {
+                errorMessage.textContent = 'Tên đăng nhập hoặc mật khẩu không đúng';
+            }
+        });
+    </script>
+</body>
+</html>
