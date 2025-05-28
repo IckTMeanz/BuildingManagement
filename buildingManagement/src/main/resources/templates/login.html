@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #007bff;
+        }
+        .btn-login {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h3 class="text-center mb-4">Đăng nhập hệ thống</h3>
+    <form th:action="@{/authenticateTheUser}" method="POST">
+        <div class="mb-3">
+            <label for="username" class="form-label">Tên đăng nhập</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Nhập tên đăng nhập" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+        </div>
+        <!-- Hiển thị lỗi nếu có -->
+        <div th:if="${param.error}" class="text-danger text-center mb-2">
+            Tên đăng nhập hoặc mật khẩu không đúng!
+        </div>
+        <button type="submit" class="btn btn-primary btn-login">Đăng nhập</button>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
