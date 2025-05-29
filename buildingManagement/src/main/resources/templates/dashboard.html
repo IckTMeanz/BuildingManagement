@@ -118,7 +118,7 @@
   <br>
   <h5>Điều hướng</h5>
 
-  <!-- Các nút dành cho cả ADMIN và KẾ TOÁN -->
+  <!-- Các nút dành cho KẾ TOÁN -->
   <div sec:authorize="hasRole('ROLE_KETOAN')">
   <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
   <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>

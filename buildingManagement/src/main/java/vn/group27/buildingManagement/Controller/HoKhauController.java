@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import vn.group27.buildingManagement.Entity.HoKhau;
 
+import vn.group27.buildingManagement.Repo.NhanKhauRepo;
 import vn.group27.buildingManagement.Service.HoKhauService;
+import vn.group27.buildingManagement.Service.NhanKhauService;
 
 import java.util.List;
 
@@ -15,10 +17,12 @@ import java.util.List;
 @RequestMapping("/hokhau")
 public class HoKhauController {
     private HoKhauService hoKhauService;
+    private NhanKhauService nhanKhauService;
     @Autowired
 
-    public HoKhauController(HoKhauService hoKhauService){
+    public HoKhauController(HoKhauService hoKhauService, NhanKhauService nhanKhauService){
         this.hoKhauService=hoKhauService;
+        this.nhanKhauService=nhanKhauService;
     }
 
     @GetMapping("/list")
@@ -26,9 +30,12 @@ public class HoKhauController {
         List<HoKhau> list= this.hoKhauService.findAll();
         model.addAttribute("list", list);
         model.addAttribute("newHoKhau", new HoKhau());
+        model.addAttribute(("dsChuHo"), nhanKhauService.findAll());
         return "ListHK";
 
     }
+
+
 
     @PostMapping("/save")
     public String saveKhoanThu(@ModelAttribute("newHoKhau") HoKhau hk) {
