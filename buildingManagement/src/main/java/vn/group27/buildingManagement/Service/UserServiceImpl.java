@@ -12,6 +12,7 @@ import vn.group27.buildingManagement.Entity.Role;
 import vn.group27.buildingManagement.Repo.UserRepo;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public User save(User u){
         return this.userRepo.save(u);
+    }
+
+    @Override
+    public List<User> findAll(){
+        return userRepo.findAll();
     }
 
 }

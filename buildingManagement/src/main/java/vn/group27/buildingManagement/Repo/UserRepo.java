@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface UserRepo extends JpaRepository<User, Integer> {
     public User findByUsername(String username);
+
+    public List<User> findAll();
+
+
 }

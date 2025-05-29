@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "khoanthu")
@@ -18,7 +19,9 @@ public class KhoanThu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaytao;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date thoihan;
     private String tenkhoanthu;
     private Boolean batbuoc;

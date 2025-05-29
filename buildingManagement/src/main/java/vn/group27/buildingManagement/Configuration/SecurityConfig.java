@@ -16,11 +16,11 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfig {
 
-//    @Bean
-//    @Autowired
-//    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
-//        return new JdbcUserDetailsManager(db);
-//    }
+    @Bean
+    @Autowired
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
+        return new JdbcUserDetailsManager(db);
+    }
 
 
 
@@ -42,14 +42,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(
-                        configurer->configurer.anyRequest().authenticated()
-                )
-                .formLogin(
-                        form->form.loginPage("/Bluemoon/login").loginProcessingUrl("/authenticateTheUser").permitAll().defaultSuccessUrl("/Bluemoon/dashboard", true)
-                ).logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/Bluemoon/home1")  // chuyển hướng tới đây sau khi logout
-                .permitAll()
+                        configurer->configurer.anyRequest().permitAll()
+//                )
+//                .formLogin(
+//                        form->form.loginPage("/Bluemoon/login").loginProcessingUrl("/authenticateTheUser").permitAll().defaultSuccessUrl("/Bluemoon/dashboard", true)
+//                ).logout(logout -> logout
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/Bluemoon/home1")  // chuyển hướng tới đây sau khi logout
+//                .permitAll()
         );
 
         http.csrf(csrf->csrf.disable());
