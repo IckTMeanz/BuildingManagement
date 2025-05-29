@@ -2,6 +2,8 @@ package vn.group27.buildingManagement.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -18,11 +20,13 @@ public class NhanKhau {
     private Integer id;
 
     private String hoten;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaysinh;
     private String gioitinh;
     private String dantoc;
     private String tongiao;
     private String cccd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaycap;
     private String noicap;
     private String nghenghiep;

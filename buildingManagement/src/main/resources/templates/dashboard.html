@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -115,12 +117,24 @@
 <aside>
   <br>
   <h5>Điều hướng</h5>
+
+  <!-- Các nút dành cho cả ADMIN và KẾ TOÁN -->
+  <div sec:authorize="hasRole('ROLE_KETOAN')">
   <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
   <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>
   <button class="sidebar-button" onclick="selectMenu('lapDotThu')">Lập đợt thu theo từng khoản</button>
   <button class="sidebar-button" onclick="selectMenu('danhSachDotThu')">Xem danh sách đợt thu</button>
   <button class="sidebar-button" onclick="selectMenu('thongKe')">Thống kê</button>
+  </div>
+  <!-- Các nút chỉ dành cho ADMIN -->
+  <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a th:href="@{/hokhau/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ khẩu</a>
+    <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
+    <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Quản lý biến động nhân khẩu</a>
+    <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+  </div>
 </aside>
+
 
 <br>
 <main>
