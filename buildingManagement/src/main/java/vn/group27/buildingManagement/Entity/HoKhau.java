@@ -1,4 +1,5 @@
 package vn.group27.buildingManagement.Entity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class HoKhau {
     private NhanKhau chuho;
 
     @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "hokhau")
     private List<HoKhauNhanKhau> hokhauNhankhauList;
 
     @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
