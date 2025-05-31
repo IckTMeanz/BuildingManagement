@@ -3,29 +3,48 @@ package vn.group27.buildingManagement.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import vn.group27.buildingManagement.Repo.UserRepo;
+import vn.group27.buildingManagement.Service.UserService;
 
 import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
 
+//    @Bean
+//    @Autowired
+//    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
+//        return new JdbcUserDetailsManager(db);
+//    }
+
+
+
     @Bean
-    @Autowired
-    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
-        return new JdbcUserDetailsManager(db);
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests(
-                configurer->configurer.requestMatchers("").hasAnyRole("")
-        ).formLogin(
-                form->form.loginPage("").loginProcessingUrl("").permitAll()
-        )
-                ;
-        return httpSecurity.build();
+    @Autowired
+    public DaoAuthenticationProvider daoAuthenticationProvider(UserService userService){
+        DaoAuthenticationProvider daoAuthenticationProvider= new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userService);
+        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
+        return daoAuthenticationProvider;
     }
+
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(
+                configurer -> configurer.anyRequest().permitAll()
+        );
+        return http.build(); // thêm dòng này để trả về SecurityFilterChain
+    }
+
 }
