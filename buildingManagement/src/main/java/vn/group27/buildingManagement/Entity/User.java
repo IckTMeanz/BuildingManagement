@@ -9,14 +9,15 @@ import java.util.Collection;
 @Table(name = "users")
 public class User {
     @Id
-    @Column(name = "id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Dùng IDENTITY cho PostgreSQL
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
      @JoinTable(
              name = "users_roles",
              joinColumns=@JoinColumn(name = "user_id"),
@@ -25,7 +26,7 @@ public class User {
 
     Collection<Role> roles;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

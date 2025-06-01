@@ -44,7 +44,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 configurer -> configurer.anyRequest().permitAll()
         );
+        http.csrf(csrf->csrf.disable());
         return http.build(); // thêm dòng này để trả về SecurityFilterChain
     }
-
 }

@@ -845,19 +845,39 @@
     // Populate dropdowns for forms
     async function populateDropdowns() {
         try {
+            // Lấy danh sách nhân khẩu
             const nhanKhauResponse = await fetch(`${API_BASE_URL}/nhankhau`);
             const nhanKhauData = await nhanKhauResponse.json();
-            const chuhoSelect = document.getElementById('hokhau-chuho');
-            const editChuhoSelect = document.getElementById('edit-hokhau-chuho');
-            chuhoSelect.innerHTML = '<option value="">Chọn chủ hộ</option>';
-            editChuhoSelect.innerHTML = '<option value="">Chọn chủ hộ</option>';
-            nhanKhauData.forEach(nhankhau => {
-                const option = `<option value="${nhankhau.id}">${nhankhau.hoten}</option>`;
-                chuhoSelect.innerHTML += option;
-                editChuhoSelect.innerHTML += option;
+
+            // Lấy danh sách hộ khẩu
+            const hokhauResponse = await fetch(`${API_BASE_URL}/hokhau`);
+            const hokhauData = await hokhauResponse.json();
+
+            // Tập ID nhân khẩu đã liên kết với hộ khẩu
+            const linkedNhanKhauIds = new Set();
+            hokhauData.forEach(hokhau => {
+                (hokhau.hokhauNhankhauList || []).forEach(hknk => {
+                    linkedNhanKhauIds.add(hknk.nhankhauId);
+                });
             });
+
+            // Lọc ra những nhân khẩu chưa liên kết với hộ khẩu nào
+            const unlinkedNhanKhau = nhanKhauData.filter(nhankhau => !linkedNhanKhauIds.has(nhankhau.id));
+
+            // Cập nhật select Chủ Hộ
+            const chuhoSelect = document.getElementById('hokhau-chuho');
+            chuhoSelect.innerHTML = '<option value="">Chọn chủ hộ</option>';
+            unlinkedNhanKhau.forEach(nhankhau => {
+                chuhoSelect.innerHTML += `<option value="${nhankhau.id}">${nhankhau.hoten}</option>`;
+            });
+
+            // Nếu không có nhân khẩu nào chưa liên kết
+            if (unlinkedNhanKhau.length === 0) {
+                chuhoSelect.innerHTML += `<option value="" disabled>Không có nhân khẩu chưa liên kết</option>`;
+            }
         } catch (error) {
-            console.error('Error populating dropdowns:', error);
+            console.error('Error populating Chủ Hộ dropdown:', error);
+            document.getElementById('hokhau-error').textContent = `Lỗi khi tải danh sách nhân khẩu: ${error.message}`;
         }
     }
 
@@ -1138,7 +1158,6 @@
             phuong: document.getElementById('edit-hokhau-phuong').value,
             quan: document.getElementById('edit-hokhau-quan').value,
             ngaylamhokhau: document.getElementById('edit-hokhau-ngaylamhokhau').value,
-            chuho: { id: parseInt(document.getElementById('edit-hokhau-chuho').value) }
         };
 
         try {
