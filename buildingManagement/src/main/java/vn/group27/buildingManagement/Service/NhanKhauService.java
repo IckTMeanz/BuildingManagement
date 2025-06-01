@@ -22,4 +22,9 @@ public class NhanKhauService {
     public NhanKhau save(NhanKhau nhanKhau){
         return this.nhanKhauRepo.save(nhanKhau);
     }
+
+
+    public NhanKhau findById(int id){
+        return this.nhanKhauRepo.findById(id);
+    }
 }

@@ -40,4 +40,8 @@ public class NhanKhau {
 
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;
+
+    public Integer getId() {
+        return id;
+    }
 }

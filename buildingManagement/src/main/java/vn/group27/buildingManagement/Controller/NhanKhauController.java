@@ -42,4 +42,6 @@ public class NhanKhauController {
         nhanKhauService.save(hk); // hoặc repository.save(kt)
         return "redirect:/nhankhau/list";
     }
+
+
 }

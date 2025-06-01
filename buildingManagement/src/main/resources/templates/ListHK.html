@@ -116,13 +116,14 @@
 
                             <div class="modal-body">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Số hộ khẩu</label>
-                                        <input type="text" th:field="*{sohokhau}" class="form-control" required>
-                                    </div>
+
                                     <div class="col-md-6">
                                         <label class="form-label">Số nhà</label>
                                         <input type="text" th:field="*{sonha}" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Ngày lập hộ khẩu</label>
+                                        <input type="date" th:field="*{ngaylamhokhau}" class="form-control" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">ID chủ hộ</label>
@@ -162,7 +163,7 @@
             <tr th:each="hk : ${list}">
                 <td th:text="${hk.sohokhau}"></td>
                 <td th:text="${hk.chuho.hoten}"></td>
-                <td th:text="${hk.sonha + ', ' + hk.duong + ', ' + hk.phuong + ', ' + hk.quan}"></td>
+                <td th:text="${hk.sonha}"></td>
                 <td th:text="${#dates.format(hk.ngaylamhokhau, 'dd/MM/yyyy')}"></td>
                 <td class="action-buttons">
                     <a th:href="@{/hokhau/edit/{id}(id=${hk.sohokhau})}" class="btn btn-warning btn-sm">Sửa</a>

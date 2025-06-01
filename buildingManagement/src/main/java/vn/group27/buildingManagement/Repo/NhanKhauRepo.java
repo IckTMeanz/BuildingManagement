@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface NhanKhauRepo extends JpaRepository<NhanKhau, Integer> {
     public List<NhanKhau> findAll();
+
+    public NhanKhau findById(int id);
 }
