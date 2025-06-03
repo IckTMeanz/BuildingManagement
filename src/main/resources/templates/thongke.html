@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8" />
+    <title>Thống kê khoản thu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        /* Toàn bộ font trang */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+            z-index: 1030;
+        }
+
+        /* Main content */
+        main {
+            margin-top: 70px; /* cách header */
+            margin-bottom: 70px; /* cách footer */
+            padding: 30px 40px;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Tiêu đề chính trong main */
+        main > h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #1e3a8a;
+            text-align: center;
+        }
+
+        /* Bảng */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+            overflow: hidden;
+        }
+        .table-wrapper {
+            max-height: 500px; /* hoặc bao nhiêu bạn muốn */
+            overflow-y: auto;
+        }
+        caption {
+            caption-side: top;
+            font-weight: 700;
+            font-size: 1.25rem;
+            padding: 20px;
+            color: #1e3a8a;
+            background-color: #e2e8f0;
+            text-align: left;
+            border-bottom: 2px solid #1e3a8a;
+        }
+        thead tr {
+            background-color: #1e3a8a;
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+        tbody tr:hover {
+            background-color: #ebf4ff;
+            cursor: default;
+            transition: background-color 0.3s ease;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Responsive cho bảng nhỏ */
+        @media (max-width: 768px) {
+            main {
+                padding: 20px 15px;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                display: none;
+            }
+            tbody tr {
+                margin-bottom: 25px;
+                border-radius: 8px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                padding: 15px;
+                background: white;
+            }
+            tbody tr td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            tbody tr td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-left: 10px;
+                font-weight: 700;
+                text-align: left;
+                color: #1e3a8a;
+            }
+            tbody tr td:last-child {
+                border-bottom: none;
+            }
+        }
+    </style>
+
+</head>
+<body>
+<header class="bg-primary text-white fixed-top shadow-sm" style="padding: 15px 30px;">
+    <h1 class="m-0 fs-3 fw-bold">Bluemoon</h1>
+</header>
+
+<main class="container pt-5 mt-4" style="padding-bottom: 70px;">
+    <h1 class="text-primary text-center fw-bold mb-4">Thống kê Khoản Thu</h1>
+
+    <!-- Bảng thống kê số lượng hộ đã nộp và chưa nộp -->
+    <div class="table-wrapper table-responsive mb-5 shadow-sm rounded">
+        <table class="table table-striped table-bordered align-middle mb-0 bg-white">
+            <caption class="fs-5 fw-semibold text-primary bg-light p-3 rounded-top">Số lượng hộ đã nộp và chưa nộp tiền</caption>
+            <thead class="table-primary text-uppercase">
+            <tr>
+                <th scope="col" class="text-center">Tên Khoản Thu</th>
+                <th scope="col" class="text-center">Số hộ đã nộp</th>
+                <th scope="col" class="text-center">Số hộ chưa nộp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${listSoLuongHo}">
+                <td data-label="Tên Khoản Thu" th:text="${item.tenKhoanThu}">Tiền điện</td>
+                <td data-label="Số hộ đã nộp" th:text="${item.soHoDaNop}">10</td>
+                <td data-label="Số hộ chưa nộp" th:text="${item.soHoChuaNop}">5</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bảng thống kê tổng tiền theo khoản thu -->
+    <div class="table-wrapper table-responsive mb-5 shadow-sm rounded">
+        <table class="table table-striped table-bordered align-middle mb-0 bg-white">
+            <caption class="fs-5 fw-semibold text-primary bg-light p-3 rounded-top">Tổng tiền đã nộp theo khoản thu</caption>
+            <thead class="table-primary text-uppercase">
+            <tr>
+                <th scope="col" class="text-center">Tên Khoản Thu</th>
+                <th scope="col" class="text-center">Tổng tiền đã nộp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${listTongTien}">
+                <td data-label="Tên Khoản Thu" th:text="${item.tenKhoanThu}">Tiền nước</td>
+                <td data-label="Tổng tiền đã nộp" th:text="${#numbers.formatDecimal(item.tongTien, 0, 'COMMA', 2, 'POINT')}">1,000,000</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Biểu đồ -->
+    <section class="mb-5">
+        <h2 class="text-center text-primary fw-semibold mb-3">Biểu đồ số lượng hộ đã nộp và chưa nộp</h2>
+        <div class="d-flex justify-content-center">
+            <canvas id="chartSoLuongHo" style="max-width: 700px; width: 100%;"></canvas>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="text-center text-primary fw-semibold mb-3">Biểu đồ tổng tiền đã nộp theo khoản thu</h2>
+        <div class="d-flex justify-content-center">
+            <canvas id="chartTongTien" style="max-width: 700px; width: 100%;"></canvas>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-primary text-white text-center py-3 fixed-bottom shadow-sm" style="font-weight: 500; letter-spacing: 0.05em;">
+    <p class="mb-0">&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 27 KTPM-HUST.</p>
+</footer>
+
+<!-- Bootstrap CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const soLuongHoData = /*[[${listSoLuongHo}]]*/ [];
+    const tongTienData = /*[[${listTongTien}]]*/ [];
+    /*]]>*/
+</script>
+
+<script>
+    const labelsSoLuongHo = soLuongHoData.map(item => item.tenKhoanThu);
+    const soHoDaNop = soLuongHoData.map(item => item.soHoDaNop);
+    const soHoChuaNop = soLuongHoData.map(item => item.soHoChuaNop);
+
+    const ctxSoLuongHo = document.getElementById('chartSoLuongHo').getContext('2d');
+    const chartSoLuongHo = new Chart(ctxSoLuongHo, {
+        type: 'bar',
+        data: {
+            labels: labelsSoLuongHo,
+            datasets: [
+                {
+                    label: 'Số hộ đã nộp',
+                    data: soHoDaNop,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)'
+                },
+                {
+                    label: 'Số hộ chưa nộp',
+                    data: soHoChuaNop,
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)'
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y', // bar ngang
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: false }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Số lượng hộ' }
+                }
+            }
+        }
+    });
+
+    const labelsTongTien = tongTienData.map(item => item.tenKhoanThu);
+    const tongTien = tongTienData.map(item => item.tongTien);
+
+    const ctxTongTien = document.getElementById('chartTongTien').getContext('2d');
+    const chartTongTien = new Chart(ctxTongTien, {
+        type: 'bar',
+        data: {
+            labels: labelsTongTien,
+            datasets: [{
+                label: 'Tổng tiền đã nộp (VNĐ)',
+                data: tongTien,
+                backgroundColor: 'rgba(75, 192, 192, 0.7)'
+            }]
+        },
+        options: {
+            indexAxis: 'y', // bar ngang
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: false }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Tổng tiền (VNĐ)' }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
