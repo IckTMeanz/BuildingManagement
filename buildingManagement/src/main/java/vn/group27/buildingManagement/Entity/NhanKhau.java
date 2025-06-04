@@ -20,12 +20,12 @@ public class NhanKhau {
     private Integer id;
 
     private String hoten;
-
     private Date ngaysinh;
     private String gioitinh;
     private String dantoc;
     private String tongiao;
     private String cccd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaycap;
     private String noicap;
     private String nghenghiep;
@@ -40,6 +40,5 @@ public class NhanKhau {
 
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;
-
 
 }

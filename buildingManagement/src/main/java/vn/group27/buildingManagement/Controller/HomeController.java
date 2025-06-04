@@ -49,12 +49,8 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/signup")
-    public String signUp(Model model){
-        User new_user= new User();
-        model.addAttribute("new_user", new_user);
-        return "signUp";
-    }
+
+
 
     @PostMapping("/register")
     public String register(@ModelAttribute("user") User user) {

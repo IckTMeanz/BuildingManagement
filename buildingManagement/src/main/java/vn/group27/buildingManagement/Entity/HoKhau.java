@@ -24,6 +24,7 @@ public class HoKhau {
     private String duong;
     private String phuong;
     private String quan;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaylamhokhau;
 
     @ManyToOne
@@ -40,6 +41,7 @@ public class HoKhau {
     @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<NopTien> noptienList;
+
 
 
 }

@@ -91,7 +91,9 @@
         <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>
         <button class="sidebar-button" onclick="selectMenu('lapDotThu')">Lập đợt thu theo từng khoản</button>
         <button class="sidebar-button" onclick="selectMenu('danhSachDotThu')">Xem danh sách đợt thu</button>
-        <button class="sidebar-button" onclick="selectMenu('thongKe')">Thống kê</button>
+
+        <a th:href="@{/thongke}" class="sidebar-button">Thống kê</a>
+
     </div>
     <!-- Các nút chỉ dành cho ADMIN -->
     <div sec:authorize="hasRole('ROLE_ADMIN')">
@@ -99,6 +101,10 @@
         <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
         <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Quản lý biến động nhân khẩu</a>
         <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+
+        <a th:href="@{/thongke}" class="sidebar-button">Thống kê</a>
+
+
     </div>
 </aside>
 
@@ -197,6 +203,18 @@
     </table>
 </div>
 </main>
+<script>
+    function selectMenu(menu) {
+        // Ẩn các phần khác (nếu có)
+        document.getElementById('thongKeSection').style.display = 'none';
+
+        if(menu === 'thongKe') {
+            document.getElementById('thongKeSection').style.display = 'block';
+        }
+        // Bạn có thể ẩn/hiện các phần khác tương tự nếu có
+    }
+</script>
+
 
 </body>
 <br>

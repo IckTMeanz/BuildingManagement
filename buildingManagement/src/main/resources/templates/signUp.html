@@ -5,9 +5,11 @@
     <title>Title</title>
 </head>
 <body>
+
 <form th:action="@{/Bluemoon/register}" method="post" th:object="${new_user}">
     <input type="text" th:field="*{username}" required />
     <input type="password" th:field="*{password}" required />
+
 
     <button type="submit">Đăng ký</button>
 </form>
