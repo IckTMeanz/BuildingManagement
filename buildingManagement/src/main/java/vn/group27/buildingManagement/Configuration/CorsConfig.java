@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Cho phép tất cả đường dẫn
-                        .allowedOrigins("http://localhost:63342") // Cho phép từ origin này
+                        .allowedOrigins("http://localhost:63343") // Cho phép từ origin này
                         .allowedMethods("*") // GET, POST, PUT, DELETE, ...
                         .allowedHeaders("*");
             }

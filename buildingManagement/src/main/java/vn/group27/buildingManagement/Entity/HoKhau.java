@@ -1,4 +1,5 @@
 package vn.group27.buildingManagement.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,9 +33,11 @@ public class HoKhau {
     private List<HoKhauNhanKhau> hokhauNhankhauList;
 
     @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;
 
     @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<NopTien> noptienList;
 }
 
