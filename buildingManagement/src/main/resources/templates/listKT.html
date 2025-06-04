@@ -184,7 +184,7 @@
             </td>
             <td th:text="${kt.ghichu}">Thu hàng tháng</td>
             <td class="action-buttons">
-                <a th:href="@{/khoanthu/edit/{id}(id=${kt.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                <!--<a th:href="@{/khoanthu/edit/{id}(id=${kt.id})}" class="btn btn-warning btn-sm">Sửa</a>-->
                 <form th:action="@{/khoanthu/delete/{id}(id=${kt.id})}" method="post" style="display:inline;"
                       onsubmit="return confirm('Bạn có chắc muốn xóa khoản thu này?');">
                     <input type="hidden" name="_method" value="delete" />

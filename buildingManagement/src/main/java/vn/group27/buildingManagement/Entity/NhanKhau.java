@@ -20,28 +20,26 @@ public class NhanKhau {
     private Integer id;
 
     private String hoten;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     private Date ngaysinh;
     private String gioitinh;
     private String dantoc;
     private String tongiao;
     private String cccd;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaycap;
     private String noicap;
     private String nghenghiep;
     private String ghichu;
 
-    @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
-    private List<TamTruTamVang> tamtrutamvangList;
-
+    @ToString.Exclude
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<HoKhauNhanKhau> hokhauNhankhauList;
 
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
+    private List<TamTruTamVang> tamtrutamvangList;
+
+    @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;
 
-    public Integer getId() {
-        return id;
-    }
+
 }
