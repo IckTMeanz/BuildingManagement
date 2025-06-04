@@ -91,7 +91,9 @@
         <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>
         <button class="sidebar-button" onclick="selectMenu('lapDotThu')">Lập đợt thu theo từng khoản</button>
         <button class="sidebar-button" onclick="selectMenu('danhSachDotThu')">Xem danh sách đợt thu</button>
+
         <a th:href="@{/thongke}" class="sidebar-button">Thống kê</a>
+
     </div>
     <!-- Các nút chỉ dành cho ADMIN -->
     <div sec:authorize="hasRole('ROLE_ADMIN')">
@@ -99,6 +101,7 @@
         <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
         <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Quản lý biến động nhân khẩu</a>
         <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+
         <a th:href="@{/thongke}" class="sidebar-button">Thống kê</a>
 
 
@@ -187,7 +190,7 @@
             </td>
             <td th:text="${kt.ghichu}">Thu hàng tháng</td>
             <td class="action-buttons">
-                <a th:href="@{/khoanthu/edit/{id}(id=${kt.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                <!--<a th:href="@{/khoanthu/edit/{id}(id=${kt.id})}" class="btn btn-warning btn-sm">Sửa</a>-->
                 <form th:action="@{/khoanthu/delete/{id}(id=${kt.id})}" method="post" style="display:inline;"
                       onsubmit="return confirm('Bạn có chắc muốn xóa khoản thu này?');">
                     <input type="hidden" name="_method" value="delete" />

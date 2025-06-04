@@ -49,10 +49,8 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/signup")
-    public String signUp(){
-        return "signUp";
-    }
+
+
 
     @PostMapping("/register")
     public String register(@ModelAttribute("user") User user) {

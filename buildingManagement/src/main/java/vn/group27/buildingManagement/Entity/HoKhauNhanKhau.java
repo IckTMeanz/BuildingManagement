@@ -1,4 +1,6 @@
 package vn.group27.buildingManagement.Entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -23,10 +25,12 @@ public class HoKhauNhanKhau {
 
     @ManyToOne
     @JoinColumn(name = "hokhauId", insertable = false, updatable = false)
+    @JsonBackReference(value = "hokhau")
     private HoKhau hokhau;
 
     @ManyToOne
     @JoinColumn(name = "nhankhauId", insertable = false, updatable = false)
+    @JsonIgnore
     private NhanKhau nhankhau;
 }
 
