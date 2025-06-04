@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trang chủ - Bluemoon</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #1E3A8A;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 26px;
+    }
+
+    .auth-buttons button {
+      background-color: #3B82F6;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 60px;
+    }
+
+    .intro {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .intro h2 {
+      color: #1E3A8A;
+      margin-bottom: 20px;
+    }
+
+    .intro p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    footer {
+      background-color: #1E3A8A;
+      color: white;
+      padding: 20px 40px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Bluemoon</h1>
+    <div class="auth-buttons">
+      <button th:href="@{/Bluemoon/login}">Đăng nhập</button>
+      <button>Đăng ký</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="intro">
+      <h2>Chào mừng đến với hệ thống quản lý thu phí Bluemoon</h2>
+      <p>
+        Hệ thống hỗ trợ Ban quản trị chung cư BlueMoon trong việc quản lý các khoản phí định kỳ, 
+        đợt thu đóng góp và thống kê hiệu quả. 
+        <br><br>
+        Với giao diện thân thiện và hiện đại, bạn có thể dễ dàng quản lý các khoản thu phí như: 
+        phí dịch vụ, phí quản lý, đóng góp từ thiện, và nhiều hơn thế nữa.
+        <br><br>
+        Hãy đăng nhập để trải nghiệm đầy đủ các tính năng!
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Bluemoon Apartment Management System. Được phát triển bởi Nhóm 27 KTPM-HUST.</p>
+  </footer>
+
+</body>
+</html>

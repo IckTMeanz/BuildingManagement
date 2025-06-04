@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BlueMoon - Trang chủ</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3 class="text-center">BlueMoon</h3>
+    <hr style="background: white;">
+    <a th:href="@{/Bluemoon/dashboard}">🏠 Dashboard</a>
+    <a th:href="@{/khoan-thu}">💰 Quản lý khoản thu</a>
+    <a th:href="@{/thu-phi}">🧾 Thu phí</a>
+    <a th:href="@{/thong-ke}">📊 Thống kê</a>
+    <a th:href="@{/hokhau}">👪 Hộ khẩu / Nhân khẩu</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h2>Chào mừng đến với hệ thống quản lý thu phí BlueMoon</h2>
+    <p>Vui lòng chọn chức năng từ thanh công cụ bên trái để bắt đầu làm việc.</p>
+    <!-- Nội dung khác có thể được chèn bằng Thymeleaf fragment -->
+<!--    <div th:replace="fragments :: contentHome"></div>-->
+</div>
+
+</body>
+</html>

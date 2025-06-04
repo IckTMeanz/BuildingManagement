@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử nộp tiền</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+        }
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        aside {
+            margin-top: 60px;
+            width: 250px;
+            background-color: #1e40af;
+            color: white;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            position: fixed;
+        }
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #3b82f6;
+            border: none;
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .sidebar-button:hover {
+            background-color: #2563eb;
+        }
+        main {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<header>
+    <h1>Bluemoon</h1>
+</header>
+
+<aside>
+    <br>
+    <h5>Điều hướng</h5>
+
+    <!-- Các nút dành cho cả ADMIN và KẾ TOÁN -->
+    <div sec:authorize="hasRole('ROLE_KETOAN')">
+        <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
+        <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>
+        <button class="sidebar-button" onclick="selectMenu('lapDotThu')">Lập đợt thu theo từng khoản</button>
+        <button class="sidebar-button" onclick="selectMenu('danhSachDotThu')">Xem danh sách đợt thu</button>
+        <button class="sidebar-button" onclick="selectMenu('thongKe')">Thống kê</button>
+    </div>
+    <!-- Các nút chỉ dành cho ADMIN -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <a th:href="@{/hokhau/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ khẩu</a>
+        <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
+        <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Quản lý biến động nhân khẩu</a>
+        <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+    </div>
+</aside>
+
+<main>
+    <div class="container">
+        <h2 class="mb-4">Lịch sử nộp tiền</h2>
+
+        <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-primary">
+            <tr>
+                <th>STT</th>
+                <th>Số hộ khẩu</th>
+                <th>Tên khoản thu</th>
+                <th>Người nộp</th>
+                <th>Số tiền (VNĐ)</th>
+                <th>Ngày nộp</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="nt, iterStat : ${listNopTien}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${nt.hokhau.sohokhau}"></td>
+                <td th:text="${nt.khoanthu.tenkhoanthu}"></td>
+                <td th:text="${nt.nguoinop}"></td>
+                <td th:text="${#numbers.formatDecimal(nt.sotien, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${#dates.format(nt.ngaynop, 'dd/MM/yyyy')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
