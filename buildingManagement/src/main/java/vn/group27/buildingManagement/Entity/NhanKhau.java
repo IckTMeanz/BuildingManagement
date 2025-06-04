@@ -3,6 +3,8 @@ package vn.group27.buildingManagement.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,7 @@ public class NhanKhau {
     private String dantoc;
     private String tongiao;
     private String cccd;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaycap;
     private String noicap;
     private String nghenghiep;
@@ -30,6 +33,7 @@ public class NhanKhau {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
+
     @JsonIgnore
     private List<HoKhauNhanKhau> hokhauNhankhauList;
 
@@ -38,6 +42,8 @@ public class NhanKhau {
     private List<TamTruTamVang> tamtrutamvangList;
 
 
+
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;
+
 }

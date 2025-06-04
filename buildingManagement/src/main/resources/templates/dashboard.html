@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -115,12 +117,33 @@
 <aside>
   <br>
   <h5>Điều hướng</h5>
-  <button class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</button>
-  <button class="sidebar-button" onclick="selectMenu('dotThu')">Tạo & quản lý đợt thu</button>
-  <button class="sidebar-button" onclick="selectMenu('lapDotThu')">Lập đợt thu theo từng khoản</button>
-  <button class="sidebar-button" onclick="selectMenu('danhSachDotThu')">Xem danh sách đợt thu</button>
-  <button class="sidebar-button" onclick="selectMenu('thongKe')">Thống kê</button>
+
+  <!-- Các nút dành cho KẾ TOÁN -->
+  <div sec:authorize="hasRole('ROLE_KETOAN')">
+  <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
+
+  <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('lichsu')">Lịch sử thu phí</a>
+    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
+
+
+  </div>
+  <!-- Các nút chỉ dành cho ADMIN -->
+  <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a th:href="@{/hokhau/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ khẩu</a>
+    <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
+
+    <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>
+    <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+    <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+  </div>
+  <div sec:authorize="hasRole('ROLE_USER')">
+    <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Danh sách khoản thu</a>
+    <a th:href="@{/noptien/list/{id}}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Lịch sử nộp tiền</a>
+    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
+
+  </div>
 </aside>
+
 
 <br>
 <main>

@@ -16,11 +16,11 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfig {
 
-//    @Bean
-//    @Autowired
-//    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
-//        return new JdbcUserDetailsManager(db);
-//    }
+    @Bean
+    @Autowired
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource db){
+        return new JdbcUserDetailsManager(db);
+    }
 
 
 
@@ -42,7 +42,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(
-                        configurer->configurer.anyRequest().authenticated()
+                        configurer->configurer
+                                .requestMatchers("/home1").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(
                         form->form.loginPage("/Bluemoon/login").loginProcessingUrl("/authenticateTheUser").permitAll().defaultSuccessUrl("/Bluemoon/dashboard", true)

@@ -5,24 +5,94 @@
     <title>Login Page</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <style>
-        body {
-            background-color: #f0f2f5;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #007bff;
-        }
-        .btn-login {
-            width: 100%;
-        }
+        <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .auth-buttons button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin-left: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    aside {
+      margin-top: 60px;
+      width: 250px;
+      background-color: #1e40af;
+      color: white;
+      padding: 20px;
+      height: calc(100vh - 60px);
+      position: fixed;
+    }
+
+    .sidebar-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+      text-align: left;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .sidebar-button:hover {
+      background-color: #2563eb;
+    }
+
+    main {
+      margin-left: 250px;
+      padding: 80px 30px 30px;
+      flex: 1;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    footer {
+      background-color: #1e3a8a;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+    }
+    </style>
     </style>
 </head>
 <body>
@@ -45,6 +115,9 @@
         <button type="submit" class="btn btn-primary btn-login">Đăng nhập</button>
     </form>
 </div>
+<footer>
+    <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+</footer>
 
 <!-- Bootstrap JS -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

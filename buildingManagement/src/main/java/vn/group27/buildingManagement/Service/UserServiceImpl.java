@@ -12,7 +12,9 @@ import vn.group27.buildingManagement.Entity.User;
 import vn.group27.buildingManagement.Repo.RoleRepository;
 import vn.group27.buildingManagement.Repo.UserRepo;
 
+
 import java.util.*;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
         if(user == null){
@@ -77,4 +80,5 @@ public class UserServiceImpl implements UserService {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
+
 }
