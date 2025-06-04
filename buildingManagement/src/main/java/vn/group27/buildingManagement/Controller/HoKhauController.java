@@ -1,50 +1,56 @@
+
 package vn.group27.buildingManagement.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.group27.buildingManagement.Entity.HoKhau;
-
-import vn.group27.buildingManagement.Entity.NhanKhau;
-import vn.group27.buildingManagement.Repo.NhanKhauRepo;
 import vn.group27.buildingManagement.Service.HoKhauService;
-import vn.group27.buildingManagement.Service.NhanKhauService;
 
 import java.util.List;
 
-@Controller
-
-@RequestMapping("/hokhau")
+@RestController
+@RequestMapping("/api/hokhau")
 public class HoKhauController {
-    private HoKhauService hoKhauService;
-    private NhanKhauService nhanKhauService;
+
     @Autowired
+    private HoKhauService hoKhauService;
 
-    public HoKhauController(HoKhauService hoKhauService, NhanKhauService nhanKhauService){
-        this.hoKhauService=hoKhauService;
-        this.nhanKhauService=nhanKhauService;
+    @GetMapping
+    public List<HoKhau> getAllHoKhau() {
+        return hoKhauService.getAllHoKhau();
     }
 
-    @GetMapping("/list")
-    public String getAllKT(Model model){
-        List<HoKhau> list= this.hoKhauService.findAll();
-        model.addAttribute("list", list);
-        model.addAttribute("newHoKhau", new HoKhau());
-        model.addAttribute(("dsChuHo"), nhanKhauService.findAll());
-        return "ListHK";
-
+    @GetMapping("/{id}")
+    public ResponseEntity<HoKhau> getHoKhauById(@PathVariable Integer id) {
+        return hoKhauService.getHoKhauById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-
-    @PostMapping("/save")
-    public String saveKhoanThu(@ModelAttribute("newHoKhau") HoKhau hk) {
-        NhanKhau chuHo = nhanKhauService.findById(hk.getChuho().getId());
-
-        hk.setChuho(chuHo); // Gán đúng đối tượng
-        hoKhauService.save(hk); // hoặc repository.save(kt)
-        return "redirect:/hokhau/list";
+    @PostMapping
+    public HoKhau createHoKhau(@RequestBody HoKhau hoKhau, @RequestParam Integer chuhoId) {
+        return hoKhauService.createHoKhau(hoKhau, chuhoId);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<HoKhau> updateHoKhau(@PathVariable Integer id, @RequestBody HoKhau hoKhauDetails, @RequestParam(required = false) Integer chuhoId) {
+        return ResponseEntity.ok(hoKhauService.updateHoKhau(id, hoKhauDetails, chuhoId));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHoKhau(@PathVariable Integer id) {
+        hoKhauService.deleteHoKhau(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{hokhauId}/nhankhau/{nhankhauId}")
+    public ResponseEntity<HoKhau> addNhanKhauToHoKhau(@PathVariable Integer hokhauId, @PathVariable Integer nhankhauId, @RequestParam String quanhevoichuho) {
+        return ResponseEntity.ok(hoKhauService.addNhanKhauToHoKhau(hokhauId, nhankhauId, quanhevoichuho));
+    }
+    @DeleteMapping("/{hokhauId}/nhankhau/{nhankhauId}")
+    public ResponseEntity<Void> removeNhanKhauFromHoKhau(@PathVariable Integer hokhauId, @PathVariable Integer nhankhauId) {
+        hoKhauService.removeNhanKhauFromHoKhau(hokhauId, nhankhauId);
+        return ResponseEntity.noContent().build();
+    }
 }

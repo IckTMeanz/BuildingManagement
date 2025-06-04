@@ -1,5 +1,6 @@
 package vn.group27.buildingManagement.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "nhankhau")
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,10 +33,15 @@ public class NhanKhau {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
+
+    @JsonIgnore
     private List<HoKhauNhanKhau> hokhauNhankhauList;
+
 
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<TamTruTamVang> tamtrutamvangList;
+
+
 
     @OneToMany(mappedBy = "nhankhau", cascade = CascadeType.ALL)
     private List<LichSuThayDoiHoKhau> lichsuthaydoihokhauList;

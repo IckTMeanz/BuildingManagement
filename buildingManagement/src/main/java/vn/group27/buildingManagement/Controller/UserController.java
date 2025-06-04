@@ -1,35 +1,61 @@
+
 package vn.group27.buildingManagement.Controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import vn.group27.buildingManagement.Entity.User;
 import vn.group27.buildingManagement.Service.UserService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/users")
 public class UserController {
-
-    private UserService userService;
     @Autowired
-    public UserController(UserService us){
-        this.userService=us;
+    private UserService userService;
+
+    // Lấy danh sách User
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.findAll();
     }
 
-    @GetMapping("/UserList")
-    public String UserManagement(Model model){
-        List<User> userList=userService.findAll();
-        model.addAttribute("userList", userList);
-        return "User";
+    // Lấy User theo id
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer id){
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-//    @GetMapping("/UserList")
-//    public List<User> UserManagement(Model model){
-//        return userService.findAll();
-//    }
+
+    // Tạo User mới
+    @PostMapping
+    public User createUser(@RequestBody User user){
+        return userService.save(user);
+    }
+
+    // Cập nhật User
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User userDetails){
+        return userService.findById(id).map(user -> {
+            user.setUsername(userDetails.getUsername());
+            // Only update password if provided and non-empty
+            if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+                user.setPassword(userDetails.getPassword());
+            }
+            user.setRoles(userDetails.getRoles());
+            User updatedUser = userService.save(user);
+            return ResponseEntity.ok(updatedUser);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Xóa User
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
+        return userService.findById(id).map(user -> {
+            userService.deleteById(id);
+            return ResponseEntity.noContent().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
 }

@@ -49,12 +49,13 @@ public class SecurityConfig {
                 .formLogin(
                         form->form.loginPage("/Bluemoon/login").loginProcessingUrl("/authenticateTheUser").permitAll().defaultSuccessUrl("/Bluemoon/dashboard", true)
                 ).logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/Bluemoon/home1")  // chuyển hướng tới đây sau khi logout
-                .permitAll()
-        );
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/Bluemoon/home1")  // chuyển hướng tới đây sau khi logout
+                        .permitAll()
+                );
 
         http.csrf(csrf->csrf.disable());
         return http.build();
     }
 }
+
