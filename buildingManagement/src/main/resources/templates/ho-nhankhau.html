@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -420,8 +420,11 @@
 <div class="main-content">
     <div class="header" style="color: white">
         <h4 >Bluemoon </h4>
-        <div class="user-profile">
-            <span style="font-weight: bold">Xin chào, Tổ Trưởng</span>
+        <div class="auth-buttons">
+            <p>Xin chào, <span th:text="${username}"></span>!</p>
+            <a th:href="@{/logout}">Đăng xuất</a>
+
+
         </div>
     </div>
     <!-- HoKhau Section -->

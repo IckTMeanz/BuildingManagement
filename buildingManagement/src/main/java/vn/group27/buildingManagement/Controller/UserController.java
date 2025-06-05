@@ -3,10 +3,12 @@ package vn.group27.buildingManagement.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import vn.group27.buildingManagement.Entity.User;
 import vn.group27.buildingManagement.Service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -58,4 +60,7 @@ public class UserController {
             return ResponseEntity.noContent().<Void>build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
+
+
 }

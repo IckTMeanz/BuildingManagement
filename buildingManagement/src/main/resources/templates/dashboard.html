@@ -95,11 +95,15 @@
     }
 
     footer {
-      background-color: #1e3a8a;
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-    }
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: fixed;
+            bottom: 0;
+            left: 250px;
+            width: calc(100% - 250px);
+        }
   </style>
 </head>
 <body>
@@ -120,26 +124,32 @@
 
   <!-- Các nút dành cho KẾ TOÁN -->
   <div sec:authorize="hasRole('ROLE_KETOAN')">
+    <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
   <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
 
   <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('lichsu')">Lịch sử thu phí</a>
-    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
+    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
+    <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
 
 
   </div>
   <!-- Các nút chỉ dành cho ADMIN -->
   <div sec:authorize="hasRole('ROLE_ADMIN')">
-    <a th:href="@{/hokhau/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ khẩu</a>
-    <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Quản lý nhân khẩu</a>
+    <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
+    <a th:href="@{/default/ho-nhankhau}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ-nhân khẩu</a>
 
-    <a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>
-    <a th:href="@{/users/list}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
-    <a th:href="@{/biendong/list}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+
+    <!--<a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>-->
+    <a th:href="@{/default/users}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+    <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
   </div>
   <div sec:authorize="hasRole('ROLE_USER')">
+    <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
     <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Danh sách khoản thu</a>
-    <a th:href="@{/noptien/list/{id}}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Lịch sử nộp tiền</a>
-    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
+    <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Lịch sử nộp tiền</a>
+    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
+    <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
 
   </div>
 </aside>
