@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách khoản thu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bluemoon Dashboard</title>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    /* Reset và cấu trúc layout chung */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    /* Container cho phần thông tin đăng nhập */
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .auth-buttons p {
+      margin: 0;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    /* Đồng nhất style cho các nút trong auth-buttons */
+    .auth-buttons a,
+    .auth-buttons button {
+      background-color: #3b82f6;
+      color: white;
+      text-decoration: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+      transition: background 0.3s;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .auth-buttons a:hover,
+    .auth-buttons button:hover {
+      background-color: #2563eb;
+    }
+
+    /* Aside (Thanh điều hướng) */
+    aside {
+      margin-top: 60px;
+      width: 250px;
+      background-color: #1e40af;
+      color: white;
+      padding: 20px;
+      height: calc(100vh - 60px);
+      position: fixed;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
+    .sidebar-button {
+      display: block;
+      width: 100%;
+      padding: 12px 18px;
+      margin-bottom: 10px;
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+      text-align: left;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .sidebar-button:hover {
+      background-color: #2563eb;
+      transform: translateX(3px);
+    }
+
+    /* Main content */
+    main {
+      margin-left: 250px;
+      padding: 80px 30px 30px;
+      flex: 1;
+    }
+    /* Card style */
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+      margin-bottom: 30px;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Footer được đẩy xuống dưới */
+    footer {
+      background-color: #1e3a8a;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: auto;
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Action buttons (Ví dụ: nút Xóa và Nộp) */
+    .action-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .action-buttons .btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 15px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+      height: 40px;
+    }
+    /* Nút Xóa */
+    .action-buttons .btn.delete {
+      background-color: #ef4444;
+      color: #fff;
+    }
+    .action-buttons .btn.delete:hover {
+      background-color: #dc2626;
+    }
+    /* Nút Nộp */
+    .action-buttons .btn.submit {
+      background-color: #3b82f6;
+      color: #fff;
+    }
+    .action-buttons .btn.submit:hover {
+      background-color: #2563eb;
+    }
+
+    /* Điều chỉnh style cho các nút trong bảng */
+    .table td.action-buttons {
+      /* Đảm bảo cell chứa các nút có đủ không gian */
+      padding: 8px;
+      /* Căn giữa các nút */
+      text-align: center;
+      /* Sắp xếp các nút theo hàng ngang */
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      /* Đảm bảo các nút không bị tràn */
+      flex-wrap: wrap;
+    }
+
+    /* Style chung cho các nút */
+    .table .btn {
+      /* Kích thước cố định cho tất cả các nút */
+      min-width: 80px;
+      height: 35px;
+      /* Căn chỉnh nội dung nút */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      /* Padding đồng nhất */
+      padding: 6px 12px;
+      /* Loại bỏ margin mặc định */
+      margin: 0;
+    }
+
+    /* Style riêng cho nút Xóa */
+    .table .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+
+    /* Style riêng cho nút Nộp */
+    .table .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    /* Hiệu ứng hover cho các nút */
+    .table .btn:hover {
+      transform: translateY(-1px);
+      transition: transform 0.2s;
+    }
+  </style>
+    <header>
+        <h1>Bluemoon</h1>
+        <div class="auth-buttons">
+            <p>Xin chào, <span th:text="${username}"></span>!</p>
+            <a th:href="@{/logout}">Đăng xuất</a>
+
+
+        </div>
+    </header>
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<br>
+<body class="bg-light">
+<aside>
+    <br>
+    <h5>Điều hướng</h5>
+
+    <!-- Các nút dành cho KẾ TOÁN -->
+    <div sec:authorize="hasRole('ROLE_KETOAN')">
+        <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
+        <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
+
+        <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('lichsu')">Lịch sử thu phí</a>
+        <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
+        <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
+
+
+    </div>
+    <!-- Các nút chỉ dành cho ADMIN -->
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
+        <a th:href="@{/default/ho-nhankhau}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ-nhân khẩu</a>
+
+
+        <!--<a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>-->
+        <a th:href="@{/default/users}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
+        <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+        <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
+        <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Danh sách khoản thu</a>
+        <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Lịch sử nộp tiền</a>
+        <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
+        <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
+
+    </div>
+</aside>
+
+<br>
+<main>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách khoản thu</h2>
+        <!-- Nút mở modal -->
+        <button sec:authorize="hasRole('ROLE_KETOAN')" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">+ Thêm khoản thu</button>
+
+        <!-- Modal thêm khoản thu -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <form th:action="@{/khoanthu/save}" method="post" th:object="${newKhoanThu}">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="addModalLabel">Thêm khoản thu mới</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Tên khoản thu</label>
+                                    <input type="text" th:field="*{tenkhoanthu}" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Bắt buộc</label>
+                                    <select th:field="*{batbuoc}" class="form-select">
+                                        <option th:value="true">Có</option>
+                                        <option th:value="false">Không</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Ngày tạo</label>
+                                    <input type="date" th:field="*{ngaytao}" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Thời hạn</label>
+                                    <input type="date" th:field="*{thoihan}" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Ghi chú</label>
+                                    <textarea th:field="*{ghichu}" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <table class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-primary">
+        <tr>
+            <th>ID</th>
+            <th>Ngày tạo</th>
+            <th>Thời hạn</th>
+            <th>Tên khoản thu</th>
+            <th>Bắt buộc</th>
+            <th>Ghi chú</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="kt : ${list}">
+            <td th:text="${kt.id}">1</td>
+            <td th:text="${#dates.format(kt.ngaytao, 'dd/MM/yyyy')}">01/01/2024</td>
+            <td th:text="${#dates.format(kt.thoihan, 'dd/MM/yyyy')}">15/01/2024</td>
+            <td th:text="${kt.tenkhoanthu}">Phí quản lý</td>
+            <td>
+                <span th:text="${kt.batbuoc} ? 'Có' : 'Không'"></span>
+            </td>
+            <td th:text="${kt.ghichu}">Thu hàng tháng</td>
+            <td class="action-buttons">
+                <!--<a th:href="@{/khoanthu/edit/{id}(id=${kt.id})}" class="btn btn-warning btn-sm">Sửa</a>-->
+                <form th:action="@{/khoanthu/delete/{id}(id=${kt.id})}" method="post" style="display:inline;"
+                      onsubmit="return confirm('Bạn có chắc muốn xóa khoản thu này?');">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button sec:authorize="hasRole('ROLE_KETOAN')" type="submit" class="btn btn-danger btn-sm">Xoá</button>
+                </form>
+
+                <!-- Nút mở modal -->
+                <button sec:authorize="hasRole('ROLE_USER')" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#fakeTransactionModal">Nộp</button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="fakeTransactionModal" tabindex="-1" aria-labelledby="fakeTransactionModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <!-- Form KHÔNG gửi thật -->
+                            <form onsubmit="return handleFakeSubmit(event)">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="fakeTransactionModalLabel">Giao dịch chuyển khoản ảo</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Họ tên người gửi</label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Số tài khoản</label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Mã giao dịch</label>
+                                            <input type="text" class="form-control" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Ngày giao dịch</label>
+                                            <input type="date" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+                                    <div class="text-center">
+                                        <p>Mã QR </p>
+                                        <img src="/qr.png" alt="Mã QR" style="max-width: 200px;">
+
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript xử lý form -->
+
+
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</main>
+<script>
+    function selectMenu(menu) {
+        // Ẩn các phần khác (nếu có)
+        document.getElementById('thongKeSection').style.display = 'none';
+
+        if(menu === 'thongKe') {
+            document.getElementById('thongKeSection').style.display = 'block';
+        }
+        // Bạn có thể ẩn/hiện các phần khác tương tự nếu có
+    }
+
+                    function handleFakeSubmit(event) {
+                      event.preventDefault(); // Ngăn gửi form
+                      const modal = bootstrap.Modal.getInstance(document.getElementById('fakeTransactionModal'));
+                      modal.hide(); // Đóng modal
+                      // Bạn có thể thêm alert ở đây nếu muốn demo thành công
+                      alert("Dữ liệu giao dịch đã được ghi nhận ");
+                      return false;
+                    }
+
+</script>
+
+<style>
+/* Style cho phần action buttons trong bảng */
+.table td.action-buttons {
+  padding: 8px !important;
+  vertical-align: middle !important;
+  width: auto !important;
+  white-space: nowrap !important;
+}
+
+/* Container cho các nút */
+.action-buttons {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+}
+
+/* Style chung cho form trong action buttons */
+.action-buttons form {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+}
+
+/* Style cho tất cả các nút trong action buttons */
+.action-buttons .btn {
+  height: 34px !important;
+  min-width: 60px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  border-radius: 4px !important;
+  vertical-align: middle !important;
+}
+
+/* Nút Xóa */
+.action-buttons .btn-danger {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: white !important;
+}
+
+/* Nút Nộp */
+.action-buttons .btn-success {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+/* Đảm bảo không có margin hoặc padding không mong muốn */
+.action-buttons * {
+  box-sizing: border-box !important;
+}
+</style>
+</body>
+<br>
+<footer>
+    <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+</footer>
+</html>
