@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Danh sách nhân khẩu - Bluemoon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .auth-buttons p {
+            margin: 0;
+        }
+        .auth-buttons a {
+            background-color: #3b82f6;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .auth-buttons a:hover {
+            background-color: #2563eb;
+        }
+
+        aside {
+            margin-top: 60px;
+            width: 250px;
+            background-color: #1e40af;
+            color: white;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            position: fixed;
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar-button {
+            display: block;
+            width: 100%;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            background-color: #3b82f6;
+            border: none;
+            color: white;
+            text-align: left;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .sidebar-button:hover {
+            background-color: #2563eb;
+            transform: translateX(3px);
+        }
+
+        main {
+            margin-left: 250px;
+            padding: 80px 30px 30px;
+            flex: 1;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+            margin-bottom: 30px;
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+        }
+
+        .table thead {
+            background-color: #1e3a8a;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .btn-success {
+            background-color: #3b82f6;
+            border: none;
+            transition: background 0.3s;
+        }
+        .btn-success:hover {
+            background-color: #2563eb;
+        }
+
+        footer {
+            background-color: #1e3a8a;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: auto;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            background-color: #1e3a8a !important;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+        }
+
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bluemoon</h1>
+        <div class="auth-buttons">
+            <p>Xin chào, <span th:text="${username}"></span>!</p>
+            <a th:href="@{/logout}">Đăng xuất</a>
+        </div>
+    </header>
+
+    <aside>
+        <br>
+        <h5>Điều hướng</h5>
+
+        <!-- Các nút dành cho KẾ TOÁN -->
+        <div sec:authorize="hasRole('ROLE_KETOAN')">
+            <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button">Trang chủ</a>
+            <a th:href="@{/khoanthu/list}" class="sidebar-button">Quản lý khoản thu</a>
+            <a th:href="@{/noptien/list}" class="sidebar-button">Lịch sử thu phí</a>
+            <a th:href="@{/default/thongke}" class="sidebar-button">Thống kê</a>
+            <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
+        </div>
+
+        <!-- Các nút chỉ dành cho ADMIN -->
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button">Trang chủ</a>
+            <a th:href="@{/default/ho-nhankhau}" class="sidebar-button">Quản lý hộ-nhân khẩu</a>
+            <a th:href="@{/default/users}" class="sidebar-button">Quản lý người dùng</a>
+            <a th:href="@{/default/thongke}" class="sidebar-button">Thống kê</a>
+            <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
+        </div>
+    </aside>
+
+    <main>
+        <div class="container">
+            <div class="card">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">Danh sách nhân khẩu</h2>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addModal">
+                        + Thêm nhân khẩu
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ tên</th>
+                                <th>Ngày sinh</th>
+                                <th>Giới tính</th>
+                                <th>Dân tộc</th>
+                                <th>Tôn giáo</th>
+                                <th>CCCD</th>
+                                <th>Ngày cấp</th>
+                                <th>Nơi cấp</th>
+                                <th>Nghề nghiệp</th>
+                                <th>Ghi chú</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="nk : ${list}">
+                                <td th:text="${nk.id}"></td>
+                                <td th:text="${nk.hoten}"></td>
+                                <td th:text="${#dates.format(nk.ngaysinh, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${nk.gioitinh}"></td>
+                                <td th:text="${nk.dantoc}"></td>
+                                <td th:text="${nk.tongiao}"></td>
+                                <td th:text="${nk.cccd}"></td>
+                                <td th:text="${#dates.format(nk.ngaycap, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${nk.noicap}"></td>
+                                <td th:text="${nk.nghenghiep}"></td>
+                                <td th:text="${nk.ghichu}"></td>
+                                <td class="action-buttons">
+                                    <a th:href="@{/nhankhau/edit/{id}(id=${nk.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                                    <form th:action="@{/nhankhau/delete/{id}(id=${nk.id})}" method="post" style="display:inline;" 
+                                          onsubmit="return confirm('Bạn có chắc muốn xóa nhân khẩu này?');">
+                                        <input type="hidden" name="_method" value="delete" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Xoá</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal thêm nhân khẩu -->
+            <div class="modal fade" id="addModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form th:action="@{/nhankhau/save}" method="post" th:object="${newNhanKhau}">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-white">Thêm nhân khẩu mới</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Họ tên</label>
+                                        <input th:field="*{hoten}" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Ngày sinh</label>
+                                        <input type="date" th:field="*{ngaysinh}" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Giới tính</label>
+                                        <input th:field="*{gioitinh}" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Dân tộc</label>
+                                        <input th:field="*{dantoc}" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tôn giáo</label>
+                                        <input th:field="*{tongiao}" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Số CCCD</label>
+                                        <input th:field="*{cccd}" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Ngày cấp</label>
+                                        <input type="date" th:field="*{ngaycap}" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nơi cấp</label>
+                                        <input th:field="*{noicap}" class="form-control">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Nghề nghiệp</label>
+                                        <input th:field="*{nghenghiep}" class="form-control">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">Ghi chú</label>
+                                        <textarea th:field="*{ghichu}" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

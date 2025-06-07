@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        * {
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          font-family: "Segoe UI", sans-serif;
+          background-color: #f4f6f9;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .login-container {
+          background: white;
+          padding: 30px;
+          border-radius: 10px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+          width: 100%;
+          max-width: 400px;
+          margin: 20px;
+        }
+
+        .login-container h3 {
+          color: #1e3a8a;
+          margin-bottom: 25px;
+          font-size: 24px;
+        }
+
+        .form-label {
+          color: #1e3a8a;
+          font-weight: 500;
+          margin-bottom: 8px;
+        }
+
+        .form-control {
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          padding: 10px 15px;
+          height: 45px;
+          font-size: 14px;
+          width: 100%;
+          margin-bottom: 15px;
+          transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+          outline: none;
+        }
+
+        .btn-login {
+          background-color: #1e3a8a;
+          color: white;
+          width: 100%;
+          padding: 12px;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          height: 45px;
+          margin-top: 10px;
+        }
+
+        .btn-login:hover {
+          background-color: #1e40af;
+        }
+
+        .text-danger {
+          color: #dc2626;
+          font-size: 14px;
+          text-align: center;
+          margin-bottom: 15px;
+          padding: 10px;
+          background-color: #fef2f2;
+          border-radius: 5px;
+          border: 1px solid #fee2e2;
+        }
+
+        footer {
+          background-color: #1e3a8a;
+          color: white;
+          text-align: center;
+          padding: 15px 0;
+          width: 100%;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+          margin: 0;
+          font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h3 class="text-center mb-4">Đăng nhập hệ thống</h3>
+        <form th:action="@{/authenticateTheUser}" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" class="form-control"
+                       placeholder="Nhập tên đăng nhập" required
+                       th:placeholder="#{login.username.placeholder}">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" id="password" name="password" class="form-control"
+                       placeholder="Nhập mật khẩu" required
+                       th:placeholder="#{login.password.placeholder}">
+            </div>
+            <div th:if="${param.error != null}" class="text-danger text-center mb-2">
+                <span th:text="#{login.error.message}">Tên đăng nhập hoặc mật khẩu không đúng!</span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-login"
+                    th:text="#{login.button}">Đăng nhập</button>
+        </form>
+    </div>
+
+    <footer>
+        <p th:text="#{footer.copyright}">&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
+

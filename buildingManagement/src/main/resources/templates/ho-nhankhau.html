@@ -1,0 +1,1331 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Hộ Khẩu - Chung cư BlueMoon</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* BODY & LAYOUT */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #f0f2f5;
+            color: #222831;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            background: linear-gradient(180deg, #222831 0%, #393e46 100%);
+            color: #eeeeee;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 2rem;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.3);
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 2.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: #00adb5;
+            text-shadow: 0 0 10px #00adb5aa;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            border-bottom: 1px solid #393e46;
+        }
+
+        .sidebar ul li button {
+            width: 100%;
+            padding: 18px 30px;
+            background: none;
+            border: none;
+            color: #eeeeee;
+            text-align: left;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.35s ease, color 0.35s ease;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        .sidebar ul li button:hover,
+        .sidebar ul li button.active {
+            background-color: #00adb5;
+            color: #222831;
+            font-weight: 700;
+            box-shadow: 0 0 15px #00adb5cc;
+            border-radius: 0 30px 30px 0;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 40px 50px;
+            overflow-y: auto;
+            background: #ffffff;
+            box-shadow: inset 0 0 15px #c9d6df44;
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* SECTIONS */
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* HEADINGS */
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #222831;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+
+        /* TABLE CONTAINER */
+        .table-container {
+            max-height: 75vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px #00adb533;
+            border: 1px solid #ccd7dd;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+            background-color: #f7f9fa;
+        }
+
+        table th:nth-child(2),
+        table td:nth-child(2) {
+            width: 220px;  /* Cột Họ Tên */
+            min-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        table th:nth-child(7),
+        table td:nth-child(7) {
+            width: 180px;  /* Cột Chủ Hộ */
+            min-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th, td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e1e6eb;
+            text-align: left;
+            color: #222831;
+        }
+
+        th {
+            background-color: #00adb5;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            position: sticky;
+            top: 0;
+            z-index: 3;
+            box-shadow: inset 0 -3px 8px #007f87aa;
+        }
+
+        tbody tr:hover {
+            background-color: #dff6f7;
+            transition: background-color 0.25s ease;
+        }
+
+        /* ERROR MESSAGE */
+        .error-message {
+            color: #ff4757;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        /* BUTTONS */
+        .add-button {
+            padding: 14px 34px;
+            background-color: #00adb5;
+            color: white;
+            border-radius: 40px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 18px #00adb599;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #008c92;
+            box-shadow: 0 10px 24px #008c9277;
+        }
+
+        .action-button {
+            padding: 8px 18px;
+            margin-right: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 3px 9px rgba(0,0,0,0.18);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .edit-button {
+            background-color: #06d6a0;
+        }
+
+        .edit-button:hover {
+            background-color: #05b57f;
+            box-shadow: 0 6px 14px #05b57fcc;
+        }
+
+        .delete-button {
+            background-color: #ef476f;
+        }
+
+        .delete-button:hover {
+            background-color: #d33e62;
+            box-shadow: 0 6px 14px #d33e62cc;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(34, 40, 49, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1200;
+            overflow-y: auto;
+            padding: 50px 15px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 40px 45px;
+            border-radius: 14px;
+            width: 520px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.3);
+            font-size: 1.05rem;
+            color: #222831;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-weight: 900;
+            color: #00adb5;
+            letter-spacing: 0.08em;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #393e46;
+            letter-spacing: 0.04em;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 24px;
+            border: 2px solid #d1d9e6;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #222831;
+            transition: border-color 0.35s ease;
+            font-weight: 500;
+        }
+
+        .modal-content input:focus,
+        .modal-content select:focus {
+            border-color: #00adb5;
+            outline: none;
+            box-shadow: 0 0 15px #00adb5bb;
+        }
+
+        .modal-content button {
+            padding: 14px 38px;
+            font-weight: 800;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.05rem;
+            margin-right: 18px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .modal-content .submit-button {
+            background-color: #00adb5;
+            color: white;
+        }
+
+        .modal-content .submit-button:hover {
+            background-color: #008c92;
+            box-shadow: 0 10px 28px #008c9277;
+        }
+
+        .modal-content .cancel-button {
+            background-color: #ef476f;
+            color: white;
+        }
+
+        .modal-content .cancel-button:hover {
+            background-color: #d33e62;
+            box-shadow: 0 10px 28px #d33e62cc;
+        }
+
+        .unlink-button {
+            background-color: #ef476f;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            cursor: pointer;
+            border-radius: 30px;
+            margin-left: 12px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px #ef476fbb;
+            transition: background-color 0.3s ease;
+        }
+
+        .unlink-button:hover {
+            background-color: #d33e62;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 65px;
+                font-size: 0;
+                padding-top: 1rem;
+            }
+            .sidebar h2 {
+                display: none;
+            }
+            .sidebar ul li button {
+                padding: 18px 0;
+                text-align: center;
+                font-size: 1.7rem;
+            }
+            .main-content {
+                padding: 25px 20px;
+            }
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+            .modal-content {
+                width: 95vw;
+                padding: 30px 25px;
+            }
+        }
+
+        /* FADE IN ANIMATION */
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        .header {
+            background-color: #1e3a8a;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+        }
+        .main-content.collapsed ~ .footer {
+            margin-left: 70px;
+        }
+        .sidebar .logo {
+            display: flex;
+            justify-content: center; /* căn ngang giữa */
+            padding-top: 1rem;        /* khoảng cách trên cùng */
+            margin-bottom: 2rem;      /* khoảng cách giữa logo và các nút */
+        }
+    </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <!-- Logo ở đỉnh sidebar -->
+    <div class="logo">
+        <!-- Nếu có hình ảnh logo thì dùng img, không thì chỉ dùng text -->
+         <img src="/static/logo.png" alt="Bluemoon Logo" width="100px" height="100px"  />
+    </div>
+
+    <ul>
+        <li><button id="hokhau-btn" class="active">Hộ Khẩu</button></li>
+        <li><button id="nhankhau-btn">Nhân Khẩu</button></li>
+    </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="header" style="color: white">
+        <h4 >Bluemoon </h4>
+        <div class="auth-buttons">
+            <p>Xin chào, <span th:text="${username}"></span>!</p>
+            <a th:href="@{/logout}">Đăng xuất</a>
+
+
+        </div>
+    </div>
+    <!-- HoKhau Section -->
+    <div id="hokhau-section" class="section active">
+        <h2>Danh Sách Hộ Khẩu</h2>
+        <button class="add-button" onclick="openHoKhauModal()">Thêm Hộ Khẩu</button>
+        <div id="hokhau-error" class="error-message"></div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>Số Hộ Khẩu</th>
+                    <th>Số Nhà</th>
+                    <th>Đường</th>
+                    <th>Phường</th>
+                    <th>Quận</th>
+                    <th>Ngày Làm Hộ Khẩu</th>
+                    <th>Chủ Hộ</th>
+                    <th>Số Lượng Thành Viên</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody id="hokhau-table-body">
+                <!-- Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- NhanKhau Section -->
+    <div id="nhankhau-section" class="section">
+        <h2>Danh Sách Nhân Khẩu</h2>
+        <button class="add-button" onclick="openNhanKhauModal()">Thêm Nhân Khẩu</button>
+        <div id="nhankhau-error" class="error-message"></div>
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Họ Tên</th>
+                    <th>Ngày Sinh</th>
+                    <th>Giới Tính</th>
+                    <th>Dân Tộc</th>
+                    <th>Tôn Giáo</th>
+                    <th>CCCD</th>
+                    <th>Ngày Cấp</th>
+                    <th>Nơi Cấp</th>
+                    <th>Nghề Nghiệp</th>
+                    <th>Ghi Chú</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody id="nhankhau-table-body">
+                <!-- Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- NhanKhau Modal (Add) -->
+<div id="nhankhau-modal" class="modal">
+    <div class="modal-content">
+        <h3>Thêm Nhân Khẩu</h3>
+        <form id="nhankhau-form">
+            <label>Họ Tên *</label>
+            <input type="text" id="nhankhau-hoten" required>
+
+            <label>Ngày Sinh *</label>
+            <input type="date" id="nhankhau-ngaysinh" required>
+
+            <label>Giới Tính *</label>
+            <select id="nhankhau-gioitinh" required>
+                <option value="">Chọn giới tính</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+            </select>
+
+            <label>Dân Tộc</label>
+            <input type="text" id="nhankhau-dantoc">
+
+            <label>Tôn Giáo</label>
+            <input type="text" id="nhankhau-tongiao">
+
+            <label>CCCD</label>
+            <input type="text" id="nhankhau-cccd">
+
+            <label>Ngày Cấp</label>
+            <input type="date" id="nhankhau-ngaycap">
+
+            <label>Nơi Cấp</label>
+            <input type="text" id="nhankhau-noicap">
+
+            <label>Nghề Nghiệp</label>
+            <input type="text" id="nhankhau-nghenghiep">
+
+            <label>Ghi Chú</label>
+            <input type="text" id="nhankhau-ghichu">
+
+            <button type="submit" class="submit-button">Thêm</button>
+            <button type="button" class="cancel-button" onclick="closeNhanKhauModal()">Hủy</button>
+        </form>
+    </div>
+</div>
+
+<!-- NhanKhau Modal (Edit) -->
+<div id="edit-nhankhau-modal" class="modal">
+    <div class="modal-content">
+        <h3>Sửa Nhân Khẩu</h3>
+        <form id="edit-nhankhau-form">
+            <input type="hidden" id="edit-nhankhau-id">
+            <label>Họ Tên *</label>
+            <input type="text" id="edit-nhankhau-hoten" required>
+
+            <label>Ngày Sinh *</label>
+            <input type="date" id="edit-nhankhau-ngaysinh" required>
+
+            <label>Giới Tính *</label>
+            <select id="edit-nhankhau-gioitinh" required>
+                <option value="">Chọn giới tính</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+            </select>
+
+            <label>Dân Tộc</label>
+            <input type="text" id="edit-nhankhau-dantoc">
+
+            <label>Tôn Giáo</label>
+            <input type="text" id="edit-nhankhau-tongiao">
+
+            <label>CCCD</label>
+            <input type="text" id="edit-nhankhau-cccd">
+
+            <label>Ngày Cấp</label>
+            <input type="date" id="edit-nhankhau-ngaycap">
+
+            <label>Nơi Cấp</label>
+            <input type="text" id="edit-nhankhau-noicap">
+
+            <label>Nghề Nghiệp</label>
+            <input type="text" id="edit-nhankhau-nghenghiep">
+
+            <label>Ghi Chú</label>
+            <input type="text" id="edit-nhankhau-ghichu">
+
+            <button type="submit" class="submit-button">Cập Nhật</button>
+            <button type="button" class="cancel-button" onclick="closeEditNhanKhauModal()">Hủy</button>
+        </form>
+    </div>
+</div>
+
+<!-- HoKhau Modal (Add) -->
+<div id="hokhau-modal" class="modal">
+    <div class="modal-content">
+        <h3>Thêm Hộ Khẩu</h3>
+        <form id="hokhau-form">
+            <label>Số Nhà *</label>
+            <input type="text" id="hokhau-sonha" required>
+
+            <label>Đường *</label>
+            <input type="text" id="hokhau-duong" required>
+
+            <label>Phường *</label>
+            <input type="text" id="hokhau-phuong" required>
+
+            <label>Quận *</label>
+            <input type="text" id="hokhau-quan" required>
+
+            <label>Ngày Làm Hộ Khẩu *</label>
+            <input type="date" id="hokhau-ngaylamhokhau" required value="2025-05-30">
+
+            <label>Chủ Hộ *</label>
+            <select id="hokhau-chuho" required>
+                <option value="">Chọn chủ hộ</option>
+                <!-- Populated dynamically -->
+            </select>
+
+            <button type="submit" class="submit-button">Thêm</button>
+            <button type="button" class="cancel-button" onclick="closeHoKhauModal()">Hủy</button>
+        </form>
+    </div>
+</div>
+
+<!-- HoKhau Modal (Edit) -->
+<div id="edit-hokhau-modal" class="modal">
+    <div class="modal-content">
+        <h3>Sửa Hộ Khẩu</h3>
+        <form id="edit-hokhau-form">
+            <input type="hidden" id="edit-hokhau-id">
+            <label>Số Nhà *</label>
+            <input type="text" id="edit-hokhau-sonha" required>
+
+            <label>Đường *</label>
+            <input type="text" id="edit-hokhau-duong" required>
+
+            <label>Phường *</label>
+            <input type="text" id="edit-hokhau-phuong" required>
+
+            <label>Quận *</label>
+            <input type="text" id="edit-hokhau-quan" required>
+
+            <label>Ngày Làm Hộ Khẩu *</label>
+            <input type="date" id="edit-hokhau-ngaylamhokhau" required>
+
+
+            <button type="submit" class="submit-button">Cập Nhật</button>
+            <button type="button" class="cancel-button" onclick="closeEditHoKhauModal()">Hủy</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add NhanKhau to HoKhau Modal -->
+<div id="add-nhankhau-hokhau-modal" class="modal">
+    <div class="modal-content">
+        <h3>Thêm Nhân Khẩu Vào Hộ Khẩu</h3>
+        <form id="add-nhankhau-hokhau-form">
+            <label>Nhân Khẩu *</label>
+            <select id="add-nhankhau-select" required>
+                <option value="">Chọn nhân khẩu</option>
+                <!-- Populated dynamically -->
+            </select>
+
+            <label>Quan Hệ Với Chủ Hộ *</label>
+            <input type="text" id="add-nhankhau-quanhe" required placeholder="Ví dụ: Vợ, Con">
+
+            <button type="submit" class="submit-button">Thêm</button>
+            <button type="button" class="cancel-button" onclick="closeAddNhanKhauToHoKhauModal()">Hủy</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal xem danh sách nhân khẩu trong hộ khẩu -->
+<div id="view-nhankhau-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <h3>Danh Sách Nhân Khẩu Trong Hộ Khẩu</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th>Họ Tên</th>
+                <th>Quan Hệ Với Chủ Hộ</th>
+            </tr>
+            </thead>
+            <tbody id="view-nhankhau-table-body">
+            <!-- Danh sách nhân khẩu sẽ được chèn vào đây -->
+            </tbody>
+        </table>
+        <button type="button" class="cancel-button" onclick="closeViewNhanKhauModal()">Đóng</button>
+    </div>
+</div>
+
+</body>
+<footer class="footer py-2" style="background-color: #1e3a8a; color: white;">
+    <div class="container-fluid text-center">
+        <p class="mb-0">&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 27 KTPM-HUST.</p>
+    </div>
+</footer>
+<script>
+    // API base URL
+    const API_BASE_URL = 'http://localhost:8080/api';
+
+    // Function to format date to YYYY-MM-DD for input fields
+    function formatDateForInput(dateString) {
+        if (!dateString) return '';
+        try {
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
+        } catch {
+            return '';
+        }
+    }
+
+    // Function to format date to DD/MM/YYYY for display
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        } catch {
+            return 'N/A';
+        }
+    }
+
+    // Fetch and display HoKhau data
+    async function fetchHoKhau() {
+        const errorDiv = document.getElementById('hokhau-error');
+        const tableBody = document.getElementById('hokhau-table-body');
+        errorDiv.textContent = '';
+        tableBody.innerHTML = '';
+
+        try {
+            // Lấy danh sách hộ khẩu
+            const responseHoKhau = await fetch(`${API_BASE_URL}/hokhau`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!responseHoKhau.ok) {
+                let errorDetail = `HTTP error! Status: ${responseHoKhau.status} - ${responseHoKhau.statusText}`;
+                const errorBody = await responseHoKhau.text().catch(() => '');
+                errorDetail += ` | Response: ${errorBody.substring(0, 200)}`;
+                throw new Error(errorDetail);
+            }
+            const hoKhauData = await responseHoKhau.json();
+
+            // Lấy danh sách nhân khẩu để dò tên chủ hộ
+            const responseNhanKhau = await fetch(`${API_BASE_URL}/nhankhau`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!responseNhanKhau.ok) {
+                let errorDetail = `HTTP error! Status: ${responseNhanKhau.status} - ${responseNhanKhau.statusText}`;
+                const errorBody = await responseNhanKhau.text().catch(() => '');
+                errorDetail += ` | Response: ${errorBody.substring(0, 200)}`;
+                throw new Error(errorDetail);
+            }
+            const nhanKhauData = await responseNhanKhau.json();
+
+            // Tạo Map id -> hoten nhân khẩu cho lookup nhanh
+            const nhanKhauMap = new Map();
+            nhanKhauData.forEach(nk => {
+                nhanKhauMap.set(nk.id, nk.hoten);
+            });
+
+            // Hiển thị bảng
+            hoKhauData.forEach(hokhau => {
+                const memberCount = (hokhau.hokhauNhankhauList || []).length;
+
+                // Lấy tên chủ hộ từ Map nếu có
+                let chuhoName = 'N/A';
+                if (hokhau.chuho && hokhau.chuho.id && nhanKhauMap.has(hokhau.chuho.id)) {
+                    chuhoName = nhanKhauMap.get(hokhau.chuho.id);
+                } else if (hokhau.chuho && hokhau.chuho.hoten) {
+                    // Nếu API trả luôn tên chủ hộ
+                    chuhoName = hokhau.chuho.hoten;
+                }
+
+                const row = `
+                <tr>
+                    <td>${hokhau.sohokhau || 'N/A'}</td>
+                    <td>${hokhau.sonha || 'N/A'}</td>
+                    <td>${hokhau.duong || 'N/A'}</td>
+                    <td>${hokhau.phuong || 'N/A'}</td>
+                    <td>${hokhau.quan || 'N/A'}</td>
+                    <td>${formatDate(hokhau.ngaylamhokhau)}</td>
+                    <td>${chuhoName}</td>
+                    <td>${memberCount}</td>
+                    <td>
+                        <button class="action-button edit-button" onclick="openEditHoKhauModal(${hokhau.sohokhau})">Sửa</button>
+                        <button class="action-button delete-button" onclick="deleteHoKhau(${hokhau.sohokhau})">Xóa</button>
+                        <button class="action-button add-button" onclick="openAddNhanKhauToHoKhauModal(${hokhau.sohokhau})">Thêm Nhân Khẩu</button>
+                        <button class="action-button edit-button" onclick="openViewNhanKhauModal(${hokhau.sohokhau})">Xem Thành Viên</button>
+
+                    </td>
+                </tr>
+            `;
+                tableBody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error('Error fetching HoKhau:', error);
+            errorDiv.textContent = `Lỗi khi tải dữ liệu Hộ Khẩu: ${error.message}`;
+        }
+    }
+    // Fetch and display NhanKhau data
+    async function fetchNhanKhau() {
+        const errorDiv = document.getElementById('nhankhau-error');
+        const tableBody = document.getElementById('nhankhau-table-body');
+        errorDiv.textContent = '';
+        tableBody.innerHTML = '';
+
+        try {
+            console.log('Fetching NhanKhau from:', `${API_BASE_URL}/nhankhau`);
+            const response = await fetch(`${API_BASE_URL}/nhankhau`, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!response.ok) {
+                let errorDetail = `HTTP error! Status: ${response.status} - ${response.statusText}`;
+                try {
+                    const errorBody = await response.text();
+                    errorDetail += ` | Response: ${errorBody.substring(0, 200)}`;
+                } catch {
+                    errorDetail += ' | Unable to read response body';
+                }
+                throw new Error(errorDetail);
+            }
+            const data = await response.json();
+            if (!Array.isArray(data)) {
+                throw new Error('Unexpected response format: Data is not an array');
+            }
+
+            console.log('NhanKhau data:', data);
+            data.forEach(nhankhau => {
+                const row = `
+                    <tr>
+                        <td>${nhankhau.id || 'N/A'}</td>
+                        <td>${nhankhau.hoten || 'N/A'}</td>
+                        <td>${formatDate(nhankhau.ngaysinh)}</td>
+                        <td>${nhankhau.gioitinh || 'N/A'}</td>
+                        <td>${nhankhau.dantoc || 'N/A'}</td>
+                        <td>${nhankhau.tongiao || 'N/A'}</td>
+                        <td>${nhankhau.cccd || 'N/A'}</td>
+                        <td>${formatDate(nhankhau.ngaycap)}</td>
+                        <td>${nhankhau.noicap || 'N/A'}</td>
+                        <td>${nhankhau.nghenghiep || 'N/A'}</td>
+                        <td>${nhankhau.ghichu || 'N/A'}</td>
+                        <td>
+                            <button class="action-button edit-button" onclick="openEditNhanKhauModal(${nhankhau.id})">Sửa</button>
+                            <button class="action-button delete-button" onclick="deleteNhanKhau(${nhankhau.id})">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error('Error fetching NhanKhau:', error);
+            errorDiv.textContent = `Lỗi khi tải dữ liệu Nhân Khẩu: ${error.message}`;
+        }
+    }
+
+    // Populate dropdowns for forms
+    async function populateDropdowns() {
+        try {
+            // Lấy danh sách nhân khẩu
+            const nhanKhauResponse = await fetch(`${API_BASE_URL}/nhankhau`);
+            const nhanKhauData = await nhanKhauResponse.json();
+
+            // Lấy danh sách hộ khẩu
+            const hokhauResponse = await fetch(`${API_BASE_URL}/hokhau`);
+            const hokhauData = await hokhauResponse.json();
+
+            // Tập ID nhân khẩu đã liên kết với hộ khẩu
+            const linkedNhanKhauIds = new Set();
+            hokhauData.forEach(hokhau => {
+                (hokhau.hokhauNhankhauList || []).forEach(hknk => {
+                    linkedNhanKhauIds.add(hknk.nhankhauId);
+                });
+            });
+
+            // Lọc ra những nhân khẩu chưa liên kết với hộ khẩu nào
+            const unlinkedNhanKhau = nhanKhauData.filter(nhankhau => !linkedNhanKhauIds.has(nhankhau.id));
+
+            // Cập nhật select Chủ Hộ
+            const chuhoSelect = document.getElementById('hokhau-chuho');
+            chuhoSelect.innerHTML = '<option value="">Chọn chủ hộ</option>';
+            unlinkedNhanKhau.forEach(nhankhau => {
+                chuhoSelect.innerHTML += `<option value="${nhankhau.id}">${nhankhau.hoten}</option>`;
+            });
+
+            // Nếu không có nhân khẩu nào chưa liên kết
+            if (unlinkedNhanKhau.length === 0) {
+                chuhoSelect.innerHTML += `<option value="" disabled>Không có nhân khẩu chưa liên kết</option>`;
+            }
+        } catch (error) {
+            console.error('Error populating Chủ Hộ dropdown:', error);
+            document.getElementById('hokhau-error').textContent = `Lỗi khi tải danh sách nhân khẩu: ${error.message}`;
+        }
+    }
+
+    // Populate NhanKhau dropdown for adding to HoKhau
+    async function populateNhanKhauDropdownForHoKhau(hokhauId) {
+        const select = document.getElementById('add-nhankhau-select');
+        select.innerHTML = '<option value="">Chọn nhân khẩu</option>';
+        try {
+            // Fetch all NhanKhau
+            const nhanKhauResponse = await fetch(`${API_BASE_URL}/nhankhau`);
+            const nhanKhauData = await nhanKhauResponse.json();
+
+            // Fetch all HoKhau to get all linked NhanKhau IDs
+            const hokhauResponse = await fetch(`${API_BASE_URL}/hokhau`);
+            const hokhauData = await hokhauResponse.json();
+            const allLinkedNhanKhauIds = new Set();
+            hokhauData.forEach(hokhau => {
+                (hokhau.hokhauNhankhauList || []).forEach(hknk => {
+                    allLinkedNhanKhauIds.add(hknk.nhankhauId);
+                });
+            });
+
+            // Filter out NhanKhau that are linked to any HoKhau
+            const unlinkedNhanKhau = nhanKhauData.filter(nhankhau => !allLinkedNhanKhauIds.has(nhankhau.id));
+            unlinkedNhanKhau.forEach(nhankhau => {
+                select.innerHTML += `<option value="${nhankhau.id}">${nhankhau.hoten}</option>`;
+            });
+
+            // If no unlinked NhanKhau, show a message
+            if (unlinkedNhanKhau.length === 0) {
+                select.innerHTML += `<option value="" disabled>Không có nhân khẩu chưa liên kết</option>`;
+            }
+        } catch (error) {
+            console.error('Error populating NhanKhau dropdown:', error);
+            document.getElementById('hokhau-error').textContent = `Lỗi khi tải danh sách nhân khẩu: ${error.message}`;
+        }
+    }
+
+    // Modal controls
+    function openNhanKhauModal() {
+        document.getElementById('nhankhau-modal').style.display = 'flex';
+    }
+
+    function closeNhanKhauModal() {
+        document.getElementById('nhankhau-modal').style.display = 'none';
+        document.getElementById('nhankhau-form').reset();
+    }
+
+    function openEditNhanKhauModal(nhankhauId) {
+        fetch(`${API_BASE_URL}/nhankhau/${nhankhauId}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(nhankhau => {
+                document.getElementById('edit-nhankhau-id').value = nhankhau.id;
+                document.getElementById('edit-nhankhau-hoten').value = nhankhau.hoten || '';
+                document.getElementById('edit-nhankhau-ngaysinh').value = formatDateForInput(nhankhau.ngaysinh);
+                document.getElementById('edit-nhankhau-gioitinh').value = nhankhau.gioitinh || '';
+                document.getElementById('edit-nhankhau-dantoc').value = nhankhau.dantoc || '';
+                document.getElementById('edit-nhankhau-tongiao').value = nhankhau.tongiao || '';
+                document.getElementById('edit-nhankhau-cccd').value = nhankhau.cccd || '';
+                document.getElementById('edit-nhankhau-ngaycap').value = formatDateForInput(nhankhau.ngaycap);
+                document.getElementById('edit-nhankhau-noicap').value = nhankhau.noicap || '';
+                document.getElementById('edit-nhankhau-nghenghiep').value = nhankhau.nghenghiep || '';
+                document.getElementById('edit-nhankhau-ghichu').value = nhankhau.ghichu || '';
+                document.getElementById('edit-nhankhau-modal').style.display = 'flex';
+            })
+            .catch(error => {
+                console.error('Error fetching NhanKhau for edit:', error);
+                document.getElementById('nhankhau-error').textContent = `Lỗi khi tải dữ liệu Nhân Khẩu: ${error.message}`;
+            });
+    }
+
+    function closeEditNhanKhauModal() {
+        document.getElementById('edit-nhankhau-modal').style.display = 'none';
+        document.getElementById('edit-nhankhau-form').reset();
+    }
+
+    function openHoKhauModal() {
+        populateDropdowns();
+        document.getElementById('hokhau-modal').style.display = 'flex';
+    }
+
+    function closeHoKhauModal() {
+        document.getElementById('hokhau-modal').style.display = 'none';
+        document.getElementById('hokhau-form').reset();
+    }
+
+    async function openEditHoKhauModal(hokhauId) {
+        try {
+            // Lấy dữ liệu hộ khẩu theo id, trong đó có hokhauNhankhauList chứa các nhân khẩu thuộc hộ khẩu
+            const response = await fetch(`${API_BASE_URL}/hokhau/${hokhauId}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const hokhau = await response.json();
+
+            // Lấy danh sách nhân khẩu thuộc hộ khẩu này
+            const hokhauNhanKhauList = hokhau.hokhauNhankhauList || [];
+
+            // Lấy danh sách nhân khẩu chi tiết từ API (để lấy họ tên tương ứng)
+            const nhanKhauResponse = await fetch(`${API_BASE_URL}/nhankhau`);
+            if (!nhanKhauResponse.ok) throw new Error(`HTTP error! Status: ${nhanKhauResponse.status}`);
+            const allNhanKhau = await nhanKhauResponse.json();
+
+            // Lọc ra nhân khẩu thuộc hộ khẩu đang sửa
+            const nhanKhauThuocHoKhau = hokhauNhanKhauList.map(hknk => {
+                // tìm thông tin chi tiết nhân khẩu theo id
+                return allNhanKhau.find(nk => nk.id === hknk.nhankhauId);
+            }).filter(nk => nk != null);
+
+
+            // Điền dữ liệu form
+            document.getElementById('edit-hokhau-id').value = hokhau.sohokhau;
+            document.getElementById('edit-hokhau-sonha').value = hokhau.sonha || '';
+            document.getElementById('edit-hokhau-duong').value = hokhau.duong || '';
+            document.getElementById('edit-hokhau-phuong').value = hokhau.phuong || '';
+            document.getElementById('edit-hokhau-quan').value = hokhau.quan || '';
+            document.getElementById('edit-hokhau-ngaylamhokhau').value = formatDateForInput(hokhau.ngaylamhokhau);
+
+
+            document.getElementById('edit-hokhau-modal').style.display = 'flex';
+
+        } catch (error) {
+            console.error('Error fetching HoKhau for edit:', error);
+            document.getElementById('hokhau-error').textContent = `Lỗi khi tải dữ liệu Hộ Khẩu: ${error.message}`;
+        }
+    }
+
+    function closeEditHoKhauModal() {
+        document.getElementById('edit-hokhau-modal').style.display = 'none';
+        document.getElementById('edit-hokhau-form').reset();
+    }
+
+    function openAddNhanKhauToHoKhauModal(hokhauId) {
+        populateNhanKhauDropdownForHoKhau(hokhauId);
+        document.getElementById('add-nhankhau-hokhau-modal').dataset.hokhauId = hokhauId;
+        document.getElementById('add-nhankhau-hokhau-modal').style.display = 'flex';
+    }
+
+    function closeAddNhanKhauToHoKhauModal() {
+        document.getElementById('add-nhankhau-hokhau-modal').style.display = 'none';
+        document.getElementById('add-nhankhau-hokhau-form').reset();
+    }
+
+    // Handle NhanKhau form submission (Add)
+    document.getElementById('nhankhau-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('nhankhau-error');
+        errorDiv.textContent = '';
+
+        const nhanKhau = {
+            hoten: document.getElementById('nhankhau-hoten').value,
+            ngaysinh: document.getElementById('nhankhau-ngaysinh').value,
+            gioitinh: document.getElementById('nhankhau-gioitinh').value,
+            dantoc: document.getElementById('nhankhau-dantoc').value || null,
+            tongiao: document.getElementById('nhankhau-tongiao').value || null,
+            cccd: document.getElementById('nhankhau-cccd').value || null,
+            ngaycap: document.getElementById('nhankhau-ngaycap').value || null,
+            noicap: document.getElementById('nhankhau-noicap').value || null,
+            nghenghiep: document.getElementById('nhankhau-nghenghiep').value || null,
+            ghichu: document.getElementById('nhankhau-ghichu').value || null
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/nhankhau`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nhanKhau)
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            closeNhanKhauModal();
+            fetchNhanKhau();
+        } catch (error) {
+            console.error('Error adding NhanKhau:', error);
+            errorDiv.textContent = `Lỗi khi thêm Nhân Khẩu: ${error.message}`;
+        }
+    });
+
+    // Handle NhanKhau form submission (Edit)
+    document.getElementById('edit-nhankhau-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('nhankhau-error');
+        errorDiv.textContent = '';
+
+        const nhankhauId = document.getElementById('edit-nhankhau-id').value;
+        const nhanKhau = {
+            hoten: document.getElementById('edit-nhankhau-hoten').value,
+            ngaysinh: document.getElementById('edit-nhankhau-ngaysinh').value,
+            gioitinh: document.getElementById('edit-nhankhau-gioitinh').value,
+            dantoc: document.getElementById('edit-nhankhau-dantoc').value || null,
+            tongiao: document.getElementById('edit-nhankhau-tongiao').value || null,
+            cccd: document.getElementById('edit-nhankhau-cccd').value || null,
+            ngaycap: document.getElementById('edit-nhankhau-ngaycap').value || null,
+            noicap: document.getElementById('edit-nhankhau-noicap').value || null,
+            nghenghiep: document.getElementById('edit-nhankhau-nghenghiep').value || null,
+            ghichu: document.getElementById('edit-nhankhau-ghichu').value || null
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/nhankhau/${nhankhauId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(nhanKhau)
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            closeEditNhanKhauModal();
+            fetchNhanKhau();
+            fetchHoKhau(); // Refresh HoKhau to update chuho names
+        } catch (error) {
+            console.error('Error updating NhanKhau:', error);
+            errorDiv.textContent = `Lỗi khi cập nhật Nhân Khẩu: ${error.message}`;
+        }
+    });
+
+    // Handle HoKhau form submission (Add)
+    document.getElementById('hokhau-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('hokhau-error');
+        errorDiv.textContent = '';
+
+        const hoKhau = {
+            sonha: document.getElementById('hokhau-sonha').value,
+            duong: document.getElementById('hokhau-duong').value,
+            phuong: document.getElementById('hokhau-phuong').value,
+            quan: document.getElementById('hokhau-quan').value,
+            ngaylamhokhau: document.getElementById('hokhau-ngaylamhokhau').value,
+            chuho: { id: parseInt(document.getElementById('hokhau-chuho').value) }
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/hokhau?chuhoId=${hoKhau.chuho.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(hoKhau)
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            const newHoKhau = await response.json();
+
+            // Automatically add the household head to the household
+            const responseNhanKhau = await fetch(`${API_BASE_URL}/nhankhau/${hoKhau.chuho.id}`);
+            const chuho = await responseNhanKhau.json();
+            const hknkResponse = await fetch(`${API_BASE_URL}/hokhau/${newHoKhau.sohokhau}/nhankhau/${hoKhau.chuho.id}?quanhevoichuho=${encodeURIComponent('Chủ hộ')}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!hknkResponse.ok) {
+                const errorBody = await hknkResponse.text();
+                throw new Error(`Failed to link household head: ${errorBody}`);
+            }
+
+            closeHoKhauModal();
+            fetchHoKhau();
+        } catch (error) {
+            console.error('Error adding HoKhau:', error);
+            errorDiv.textContent = `Lỗi khi thêm Hộ Khẩu: ${error.message}`;
+        }
+    });
+
+    // Handle HoKhau form submission (Edit)
+    document.getElementById('edit-hokhau-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('hokhau-error');
+        errorDiv.textContent = '';
+
+        const hokhauId = document.getElementById('edit-hokhau-id').value;
+        const hoKhau = {
+            sonha: document.getElementById('edit-hokhau-sonha').value,
+            duong: document.getElementById('edit-hokhau-duong').value,
+            phuong: document.getElementById('edit-hokhau-phuong').value,
+            quan: document.getElementById('edit-hokhau-quan').value,
+            ngaylamhokhau: document.getElementById('edit-hokhau-ngaylamhokhau').value,
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/hokhau/${hokhauId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(hoKhau)
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            closeEditHoKhauModal();
+            fetchHoKhau();
+        } catch (error) {
+            console.error('Error updating HoKhau:', error);
+            errorDiv.textContent = `Lỗi khi cập nhật Hộ Khẩu: ${error.message}`;
+        }
+    });
+    // Handle Add NhanKhau to HoKhau form submission
+    document.getElementById('add-nhankhau-hokhau-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errorDiv = document.getElementById('hokhau-error');
+        errorDiv.textContent = '';
+
+        const hokhauId = document.getElementById('add-nhankhau-hokhau-modal').dataset.hokhauId;
+        const nhankhauId = document.getElementById('add-nhankhau-select').value;
+        const quanhe = document.getElementById('add-nhankhau-quanhe').value;
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/hokhau/${hokhauId}/nhankhau/${nhankhauId}?quanhevoichuho=${encodeURIComponent(quanhe)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            closeAddNhanKhauToHoKhauModal();
+            fetchHoKhau();
+        } catch (error) {
+            console.error('Error adding NhanKhau to HoKhau:', error);
+            errorDiv.textContent = `Lỗi khi thêm Nhân Khẩu vào Hộ Khẩu: ${error.message}`;
+        }
+    });
+
+    // Delete HoKhau
+    async function deleteHoKhau(hokhauId) {
+        if (!confirm('Bạn có chắc chắn muốn xóa hộ khẩu này?')) return;
+        const errorDiv = document.getElementById('hokhau-error');
+        errorDiv.textContent = '';
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/hokhau/${hokhauId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            fetchHoKhau();
+        } catch (error) {
+            console.error('Error deleting HoKhau:', error);
+            errorDiv.textContent = `Lỗi khi xóa Hộ Khẩu: ${error.message}`;
+        }
+    }
+
+    // Delete NhanKhau
+    async function deleteNhanKhau(nhankhauId) {
+        if (!confirm('Bạn có chắc chắn muốn xóa nhân khẩu này?')) return;
+        const errorDiv = document.getElementById('nhankhau-error');
+        errorDiv.textContent = '';
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/nhankhau/${nhankhauId}`, {
+                method: 'DELETE'
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorBody}`);
+            }
+            fetchNhanKhau();
+            fetchHoKhau(); // Refresh HoKhau to update member counts and chuho
+        } catch (error) {
+            console.error('Error deleting NhanKhau:', error);
+            errorDiv.textContent = `Lỗi khi xóa Nhân Khẩu: ${error.message}`;
+        }
+    }
+
+    // Mở modal xem nhân khẩu trong hộ khẩu
+    async function openViewNhanKhauModal(hokhauId) {
+        const modal = document.getElementById('view-nhankhau-modal');
+        const tableBody = document.getElementById('view-nhankhau-table-body');
+        tableBody.innerHTML = '';
+
+        try {
+            // Lấy dữ liệu chi tiết hộ khẩu, trong đó có danh sách nhân khẩu với quan hệ
+            const response = await fetch(`${API_BASE_URL}/hokhau/${hokhauId}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const hokhau = await response.json();
+
+            const nhanKhauList = hokhau.hokhauNhankhauList || [];
+            if (nhanKhauList.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="2" style="text-align:center;">Không có nhân khẩu trong hộ khẩu</td></tr>`;
+            } else {
+                // Lấy danh sách nhân khẩu chi tiết (tên) từ API nhân khẩu
+                const responseNhanKhau = await fetch(`${API_BASE_URL}/nhankhau`);
+                if (!responseNhanKhau.ok) throw new Error(`HTTP error! Status: ${responseNhanKhau.status}`);
+                const allNhanKhau = await responseNhanKhau.json();
+
+                // Ghép thông tin tên và quan hệ với chủ hộ
+                nhanKhauList.forEach(hknk => {
+                    const nk = allNhanKhau.find(n => n.id === hknk.nhankhauId);
+                    const hoten = nk ? nk.hoten : 'N/A';
+                    const quanhe = hknk.quanhevoichuho || 'N/A';
+                    tableBody.innerHTML += `
+                    <tr>
+                        <td>${hoten}</td>
+                        <td>${quanhe}</td>
+                    </tr>
+                `;
+                });
+            }
+
+            modal.style.display = 'flex';
+        } catch (error) {
+            console.error('Error loading nhân khẩu hộ khẩu:', error);
+            tableBody.innerHTML = `<tr><td colspan="2" style="color:red;">Lỗi tải dữ liệu: ${error.message}</td></tr>`;
+            modal.style.display = 'flex';
+        }
+    }
+
+    function closeViewNhanKhauModal() {
+        document.getElementById('view-nhankhau-modal').style.display = 'none';
+        document.getElementById('view-nhankhau-table-body').innerHTML = '';
+    }
+
+
+    // Toggle sections and update button state
+    function showSection(sectionId, buttonId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+
+        document.querySelectorAll('.sidebar button').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.getElementById(buttonId).classList.add('active');
+    }
+
+    // Event listeners for sidebar buttons
+    document.getElementById('hokhau-btn').addEventListener('click', () => {
+        showSection('hokhau-section', 'hokhau-btn');
+        fetchHoKhau();
+    });
+
+    document.getElementById('nhankhau-btn').addEventListener('click', () => {
+        showSection('nhankhau-section', 'nhankhau-btn');
+        fetchNhanKhau();
+    });
+
+    // Initial load
+    fetchHoKhau();
+</script>
+
+</html>
