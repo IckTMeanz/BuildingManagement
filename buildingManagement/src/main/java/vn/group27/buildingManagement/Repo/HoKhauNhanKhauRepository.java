@@ -1,3 +1,4 @@
+
 package vn.group27.buildingManagement.Repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,5 @@
 
+
 package vn.group27.buildingManagement.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,3 +55,4 @@ public class NhanKhauController {
         }
     }
 }
+
