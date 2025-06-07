@@ -33,7 +33,6 @@
     color: white;
     padding: 15px 30px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     position: fixed;
     top: 0;
@@ -42,6 +41,44 @@
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  header .logo {
+    flex: 4 0 auto;  /* Logo ở bên trái */
+    margin-right: 20px;  /* Khoảng cách giữa logo và tiêu đề */
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    flex-grow: 1;  /* Giúp phần h1 (Bluemoon) chiếm không gian còn lại */
+  }
+
+  .auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;  /* Các nút đăng xuất nằm bên phải */
+  }
+
+  .auth-buttons p {
+    margin: 0;
+  }
+
+  .auth-buttons a {
+    background-color: #3b82f6;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+
+  .auth-buttons a:hover {
+    background-color: #2563eb;
+  }
+
 
   .auth-buttons {
     display: flex;
@@ -97,8 +134,8 @@
   }
 
   main {
-    margin-left: 250px;
-    padding: 80px 30px 30px;
+    margin-left: 220px;
+    padding: 120px 30px 30px; /* Increased top padding to fix content under header */
     flex: 1;
   }
 
@@ -128,7 +165,9 @@
 <body>
 
 <header>
-  <h1>Bluemoon</h1>
+  <div class="logo">
+    <img src="/logo.png" alt="Bluemoon Logo" width="100" height="100" />
+  </div>
   <div class="auth-buttons">
     <p>Xin chào, <span th:text="${username}"></span>!</p>
     <a th:href="@{/logout}">Đăng xuất</a>
@@ -147,7 +186,7 @@
   <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('khoanThu')">Quản lý khoản thu</a>
 
   <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('lichsu')">Lịch sử thu phí</a>
-    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
+    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('thongke')">Thống kê</a>
     <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
 
 
@@ -160,14 +199,14 @@
 
     <!--<a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>-->
     <a th:href="@{/default/users}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
-    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
     <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
   </div>
   <div sec:authorize="hasRole('ROLE_USER')">
     <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
     <a th:href="@{/khoanthu/list}" class="sidebar-button" onclick="selectMenu('hoKhau')">Danh sách khoản thu</a>
     <a th:href="@{/noptien/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Lịch sử nộp tiền</a>
-    <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
+    <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('user')">Thống kê</a>
     <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
 
   </div>
@@ -208,7 +247,7 @@
 
 
 <footer>
-  <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 20 KTPM-HUST.</p>
+  <p>&copy; 2025 Bluemoon Apartment Management. Thiết kế bởi Nhóm 27 KTPM-HUST.</p>
 </footer>
 
 <script>
