@@ -1,3 +1,4 @@
+
 package vn.group27.buildingManagement.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,3 +28,4 @@ public class RoleController {
 
     // Có thể thêm các API khác nếu cần: tạo, sửa, xóa role
 }
+

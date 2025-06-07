@@ -1,3 +1,4 @@
+
 package vn.group27.buildingManagement.Configuration;
 
 import org.springframework.context.annotation.Bean;
@@ -19,4 +20,5 @@ public class CorsConfig {
             }
         };
     }
+
 }

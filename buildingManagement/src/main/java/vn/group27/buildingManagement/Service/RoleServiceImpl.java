@@ -1,3 +1,4 @@
+
 package vn.group27.buildingManagement.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,4 +18,5 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> findAll() {
         return roleRepository.findAll();
     }
+
 }
