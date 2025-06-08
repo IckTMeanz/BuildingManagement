@@ -267,10 +267,10 @@
         <a th:href="@{/Bluemoon/dashboard}" class="sidebar-button" onclick="selectMenu('khoanThu')">Trang chủ</a>
         <a th:href="@{/default/ho-nhankhau}" class="sidebar-button" onclick="selectMenu('hoKhau')">Quản lý hộ-nhân khẩu</a>
 
-
+        <a th:href="@{/tamtrutamvang/add}" class="sidebar-button">Thêm Tạm trú/tạm vắng</a>
         <!--<a th:href="@{/nhankhau/list}" class="sidebar-button" onclick="selectMenu('nhanKhau')">Đăng kí tạm trú tạm vắng</a>-->
         <a th:href="@{/default/users}" class="sidebar-button" onclick="selectMenu('user')">Quản lý người dùng</a>
-        <a th:href="@{/default/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
+        <a th:href="@{/thongke}" class="sidebar-button" onclick="selectMenu('bienDong')">Thống kê</a>
         <a th:href="@{/default/user/profile}" class="sidebar-button">Hồ sơ người dùng</a>
     </div>
     <div sec:authorize="hasRole('ROLE_USER')">

@@ -35,3 +35,4 @@ public class TamTruTamVangController {
         return "redirect:/tamtrutamvang/add?success";
     }
 }
+
