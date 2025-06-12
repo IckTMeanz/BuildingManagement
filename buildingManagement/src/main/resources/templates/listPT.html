@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách phương tiện</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            padding: 40px 0;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .modal-header {
+            background-color: #1e3a8a;
+            color: white;
+        }
+        .btn-success, .btn-danger {
+            min-width: 80px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4 text-primary">📋 Danh sách phương tiện</h2>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">+ Thêm phương tiện</button>
+
+    <table class="table table-bordered table-striped shadow-sm">
+        <thead class="table-dark">
+        <tr>
+            <th>Biển số</th>
+            <th>Loại xe</th>
+            <th>Màu sắc</th>
+            <th>Hộ khẩu</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pt : ${list}">
+            <td th:text="${pt.biensoxe}"></td>
+            <td th:text="${pt.loaixe}"></td>
+            <td th:text="${pt.mausac}"></td>
+            <td th:text="${pt.hokhau.sohokhau}"></td>
+            <td>
+                <span class="badge bg-success" th:if="${pt.trangthai.equals('Đã duyệt')}" th:text="${pt.trangthai}"></span>
+                <span class="badge bg-danger" th:if="${pt.trangthai.equals('Từ chối')}" th:text="${pt.trangthai}"></span>
+                <span class="badge bg-warning text-dark" th:if="${pt.trangthai != 'Đã duyệt' and pt.trangthai != 'Từ chối'}" th:text="${pt.trangthai}"></span>
+
+            </td>
+            <td>
+                <form th:action="@{/phuongtien/delete/{id}(id=${pt.biensoxe})}" method="post"
+                      onsubmit="return confirm('Bạn có chắc muốn xóa?');">
+                    <button class="btn btn-danger btn-sm">Xoá</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal thêm phương tiện -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/phuongtien/save}" method="post" th:object="${newPhuongTien}">
+                <div class="modal-header">
+                    <h5 class="modal-title">🚗 Thêm phương tiện</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Biển số</label>
+                    <input type="text" th:field="*{biensoxe}" class="form-control" required />
+
+                    <label>Loại xe</label>
+                    <input type="text" th:field="*{loaixe}" class="form-control" required />
+
+                    <label>Màu sắc</label>
+                    <input type="text" th:field="*{mausac}" class="form-control" required />
+
+                    <label>Chọn hộ khẩu</label>
+                    <select class="form-select" th:field="*{hokhau.sohokhau}" required>
+                        <option th:each="hk : ${dsHoKhau}" th:value="${hk.sohokhau}" th:text="${hk.sohokhau}"></option>
+                    </select>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Lưu</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

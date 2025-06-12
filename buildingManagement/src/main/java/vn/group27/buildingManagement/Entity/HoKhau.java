@@ -42,6 +42,12 @@ public class HoKhau {
     @JsonIgnore
     private List<NopTien> noptienList;
 
+    @OneToMany(mappedBy = "hokhau", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<PhuongTien> phuongTienList;
+
+
+
 
 
 }
